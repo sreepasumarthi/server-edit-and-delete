@@ -48,8 +48,6 @@
                             </p>
                         </form>
                         <section id="craft-details" class="hidden">
-
-
                         </section>
                     </section>
                 </section>
@@ -74,6 +72,16 @@
                     <span id="edit-icon" class="edit-icon" onclick="editCraft()">🖉</span>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
+                    <form id="edit-craft-form" class="hidden" onsubmit="saveEdits()">
+                        <label for="edit-name">Name:</label>
+                        <input type="text" id="edit-name" name="name" required><br>
+                        <label for="edit-description">Description:</label>
+                        <input type="text" id="edit-description" name="description" required><br>
+                        <label for="edit-supplies">Supplies:</label>
+                        <input type="text" id="edit-supplies" name="supplies" required><br>
+                        <input type="file" id="edit-img" name="img" accept="image/*"><br>
+                        <button type="submit">Save Edits</button>
+                    </form>
                 </div>
             </div>
         </div>
