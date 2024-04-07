@@ -7,6 +7,7 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./public/images/");
@@ -16,11 +17,14 @@ const storage = multer.diskStorage({
     },
 });
 
+
 const upload = multer({ storage: storage });
+
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
+
 
 let crafts = [
     {
@@ -310,17 +314,21 @@ let crafts = [
     },
 ];
 
+
 app.get("/api/crafts", (req, res) => {
     res.send(crafts);
 });
 
+
 app.post("/api/crafts", upload.single("img"), (req, res) => {
     const result = validateCraft(req.body);
+
 
     if (result.error) {
         res.status(400).send(result.error.details[0].message);
         return;
     }
+
 
     const craft = {
         _id: crafts.length + 1,
@@ -329,70 +337,41 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
         supplies: req.body.supplies.split(","),
     };
 
+
     if (req.file) {
         craft.img = "images/" + req.file.filename;
     }
+
 
     crafts.push(craft);
     res.json(crafts);
 });
 
+// Add a new endpoint to handle craft updates
 app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
     const craftId = parseInt(req.params.id);
     const craftIndex = crafts.findIndex(craft => craft._id === craftId);
 
     if (craftIndex === -1) {
-        res.status(404).send("Craft not found");
-        return;
+        return res.status(404).send("Craft not found");
     }
 
     const result = validateCraft(req.body);
 
     if (result.error) {
-        res.status(400).send(result.error.details[0].message);
-        return;
+        return res.status(400).send(result.error.details[0].message);
     }
 
-    const updatedCraft = {
-        _id: craftId,
-        name: req.body.name,
-        description: req.body.description,
-        supplies: req.body.supplies.split(","),
-    };
-
+    // Update the craft details
+    crafts[craftIndex].name = req.body.name;
+    crafts[craftIndex].description = req.body.description;
+    crafts[craftIndex].supplies = req.body.supplies.split(",");
     if (req.file) {
-        updatedCraft.img = "images/" + req.file.filename;
+        crafts[craftIndex].img = "images/" + req.file.filename;
     }
 
-    crafts[craftIndex] = updatedCraft;
-    res.json(crafts);
+    res.json(crafts[craftIndex]);
 });
-
-// Add route for updating craft details
-app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
-    const craftId = parseInt(req.params.id);
-    const craftIndex = crafts.findIndex((craft) => craft._id === craftId);
-
-    if (craftIndex === -1) {
-        res.status(404).send("Craft not found");
-        return;
-    }
-
-    const updatedCraft = {
-        _id: craftId,
-        name: req.body.name,
-        description: req.body.description,
-        supplies: req.body.supplies.split(","),
-    };
-
-    if (req.file) {
-        updatedCraft.img = "images/" + req.file.filename;
-    }
-
-    crafts[craftIndex] = updatedCraft;
-    res.json(updatedCraft.img); // Sending back updated image URL
-});
-
 
 const validateCraft = (craft) => {
     const schema = Joi.object({
@@ -402,8 +381,10 @@ const validateCraft = (craft) => {
         description: Joi.string().min(3).required(),
     });
 
+
     return schema.validate(craft);
 };
+
 
 app.listen(3040, () => {
     console.log("listening");

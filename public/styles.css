@@ -28,7 +28,7 @@ body {
     transform: scale(1.05);
 }
 
-/* Modal */
+/* Craft Information Modal */
 .modal {
     display: none;
     position: fixed;

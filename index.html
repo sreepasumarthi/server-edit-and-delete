@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 
+
 <head>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
+
 
 <body>
     <header>
@@ -36,6 +38,7 @@
                                 <label for="description">Description:</label>
                                 <input type="text" id="description" name="description" required />
                             </p>
+
 
                             <p id="supplies-p">
                                 <label class="inline">Supplies:</label>
@@ -71,34 +74,12 @@
                     <h2 id="modal-title"></h2>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
-                    <!-- Add a form to modify craft details inside the modal -->
-                    <form id="edit-craft-form" class="hidden">
-                        <p>
-                            <label for="edit-name">Name:</label>
-                            <input type="text" id="edit-name" name="name" required />
-                        </p>
-                        <p>
-                            <label for="edit-description">Description:</label>
-                            <input type="text" id="edit-description" name="description" required />
-                        </p>
-                        <p>
-                            <label for="edit-supplies">Supplies:</label>
-                            <input type="text" id="edit-supplies" name="supplies" required />
-                        </p>
-                        <p>
-                            <label for="edit-img">Image:</label>
-                            <input type="file" id="edit-img" name="img" accept="image/*" />
-                        </p>
-                        <p>
-                            <button type="button" id="cancel-edit-button">Cancel</button>
-                            <button type="submit">Save Edits</button>
-                        </p>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
+
 
 </html>
