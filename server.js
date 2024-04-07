@@ -7,9 +7,6 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 
-
-
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./public/images/");
@@ -19,20 +16,11 @@ const storage = multer.diskStorage({
     },
 });
 
-
-
-
 const upload = multer({ storage: storage });
-
-
-
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
-
-
-
 
 let crafts = [
     {
@@ -322,15 +310,9 @@ let crafts = [
     },
 ];
 
-
-
-
 app.get("/api/crafts", (req, res) => {
     res.send(crafts);
 });
-
-
-
 
 app.post("/api/crafts/:id", upload.single("img"), (req, res) => {
     const { id } = req.params;
@@ -355,10 +337,6 @@ app.post("/api/crafts/:id", upload.single("img"), (req, res) => {
     res.json(updatedCraft);
 });
 
-
-
-
-
 const validateCraft = (craft) => {
     const schema = Joi.object({
         _id: Joi.allow(""),
@@ -367,14 +345,8 @@ const validateCraft = (craft) => {
         description: Joi.string().min(3).required(),
     });
 
-
-
-
     return schema.validate(craft);
 };
-
-
-
 
 app.listen(3040, () => {
     console.log("listening");

@@ -7,7 +7,6 @@ const getCrafts = async () => {
     }
 };
 
-
 const openModal = (craft) => {
     const modal = document.getElementById("myModal");
     const modalTitle = document.getElementById("modal-title");
@@ -15,10 +14,8 @@ const openModal = (craft) => {
     const modalSupplies = document.getElementById("modal-supplies");
     const modalImage = document.getElementById("modal-image");
 
-
     modalTitle.innerHTML = `<strong>${craft.name}</strong>`;
     modalDescription.textContent = craft.description;
-
 
     modalSupplies.innerHTML = "<strong>Supplies:</strong>";
     craft.supplies.forEach((supply) => {
@@ -27,21 +24,16 @@ const openModal = (craft) => {
         modalSupplies.appendChild(listItem);
     });
 
-
     modalImage.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
 
-
     modal.style.display = "block";
-
 
     const closeModal = () => {
         modal.style.display = "none";
     };
 
-
     const closeButton = document.getElementsByClassName("close")[0];
     closeButton.addEventListener("click", closeModal);
-
 
     window.addEventListener("click", (event) => {
         if (event.target == modal) {
@@ -50,11 +42,9 @@ const openModal = (craft) => {
     });
 };
 
-
 const showCrafts = async () => {
     const craftsJSON = await getCrafts();
     const columns = document.querySelectorAll(".column");
-
 
     if (craftsJSON == "") {
         columns.forEach(column => {
@@ -63,11 +53,9 @@ const showCrafts = async () => {
         return;
     }
 
-
     let columnIndex = 0;
     let columnCount = columns.length;
     let columnHeights = Array.from(columns).map(() => 0); // Array to store column heights
-
 
     craftsJSON.forEach((craft, index) => {
         const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
@@ -81,7 +69,6 @@ const showCrafts = async () => {
         columns[shortestColumnIndex].appendChild(galleryItem);
         columnHeights[shortestColumnIndex] += galleryItem.offsetHeight;
 
-
         if (columnHeights[shortestColumnIndex] >= columns[shortestColumnIndex].offsetHeight) {
             columnIndex++;
             if (columnIndex === columnCount) columnIndex = 0;
@@ -90,9 +77,7 @@ const showCrafts = async () => {
     });
 };
 
-
 showCrafts();
-
 
 const addCraft = async (e) => {
     e.preventDefault();
@@ -104,9 +89,7 @@ const addCraft = async (e) => {
         formData.append("img", imgInput.files[0]);
     }
 
-
     formData.append("supplies", getSupplies());
-
 
     try {
         response = await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts", {
@@ -114,11 +97,9 @@ const addCraft = async (e) => {
             body: formData,
         });
 
-
         if (!response.ok) {
             throw new Error("Error posting data");
         }
-
 
         await response.json();
         resetForm();
@@ -141,7 +122,6 @@ const addCraft = async (e) => {
  
     return supplies.join(",");
   };
-
 
   document.getElementById("cancel-button").addEventListener("click", (e) => {
     e.preventDefault();
@@ -169,7 +149,6 @@ const addCraft = async (e) => {
     input.type = "text";
     section.append(input);
   };
-
 
   const openDialog = (id) => {
     document.getElementById("dialog").style.display = "block";
@@ -203,7 +182,6 @@ const addCraft = async (e) => {
 document.getElementById("img-prev").onerror = function() {
     this.src = 'https://place-hold.it/200x300';
 };
-
 
 function editCraft(craftId) {
     // Hide existing information
