@@ -200,6 +200,10 @@ async function saveEdits(e, craftId) {
     const formData = new FormData(form);
     formData.append("_id", craftId); // Include craft ID in form data
 
+    // Get the new name entered by the user
+    const newName = document.getElementById("edit-name").value;
+    formData.append("name", newName); // Include the new name in form data
+
     try {
         const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
             method: "POST", // Use POST method
@@ -217,4 +221,5 @@ async function saveEdits(e, craftId) {
         console.error(error);
     }
 }
+
 
