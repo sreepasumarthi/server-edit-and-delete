@@ -41,16 +41,15 @@ const openModal = (craft) => {
         }
     });
 
-     // Event listener for the edit icon
-     editIcon.addEventListener("click", () => {
-        // Hide modal content
+    editIcon.onclick = () => {
+        // Hide existing stuff in the modal
         modalTitle.style.display = "none";
         modalDescription.style.display = "none";
         modalSupplies.style.display = "none";
 
-        // Display "hello world" text
-        modal.innerHTML = "<p>Hello World</p>";
-    })
+        // Show "hiii" message
+        modal.innerHTML = "<p>hiii</p>";
+    };
 };
 
 const showCrafts = async () => {
