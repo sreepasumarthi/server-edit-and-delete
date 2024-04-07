@@ -342,18 +342,16 @@ app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
     const craftIndex = crafts.findIndex(craft => craft._id === craftId);
 
     if (craftIndex === -1) {
-        res.status(404).send("Craft not found");
-        return;
+        return res.status(404).send("Craft not found");
     }
 
     const result = validateCraft(req.body);
 
     if (result.error) {
-        res.status(400).send(result.error.details[0].message);
-        return;
+        return res.status(400).send(result.error.details[0].message);
     }
 
-    const updatedCraft = {
+    const editedCraft = {
         _id: craftId,
         name: req.body.name,
         description: req.body.description,
@@ -361,11 +359,11 @@ app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
     };
 
     if (req.file) {
-        updatedCraft.img = "images/" + req.file.filename;
+        editedCraft.img = "images/" + req.file.filename;
     }
 
-    crafts[craftIndex] = updatedCraft;
-    res.json(updatedCraft);
+    crafts[craftIndex] = editedCraft;
+    res.json(crafts);
 });
 
 

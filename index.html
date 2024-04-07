@@ -72,20 +72,22 @@
                     <h2 id="modal-title"></h2>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
-                    <form id="edit-craft-form" class="hidden">
-                        <label for="edit-name">Name:</label>
-                        <input type="text" id="edit-name" name="name" required />
-                        <label for="edit-description">Description:</label>
-                        <input type="text" id="edit-description" name="description" required />
-                        <label for="edit-img">Image:</label>
-                        <input type="file" id="edit-img" name="img" accept="image/*"/>
-                        <label>Supplies:</label>
-                        <a href="#" id="add-edit-supply">Add Supply</a>
-                        <div id="edit-supply-boxes"></div>
-                        <button type="button" id="cancel-edit-button">Cancel</button>
-                        <button type="submit">Save Edits</button>
+                    <form id="edit-craft-form">
+                        <p>
+                            <label for="edit-name">Name:</label>
+                            <input type="text" id="edit-name" name="edit-name" required />
+                        </p>
+                        <p>
+                            <label for="edit-description">Description:</label>
+                            <input type="text" id="edit-description" name="edit-description" required />
+                        </p>
+                        <p>
+                            <label for="edit-supplies">Supplies:</label>
+                            <textarea id="edit-supplies" name="edit-supplies" required></textarea>
+                        </p>
+                        <input type="hidden" id="edit-craft-id" name="edit-craft-id" />
+                        <button type="submit">Save Changes</button>
                     </form>
-                    <button id="edit-craft-button">Edit Craft</button>
                 </div>
             </div>
         </div>
