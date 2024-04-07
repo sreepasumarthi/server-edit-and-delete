@@ -71,19 +71,29 @@
                     <h2 id="modal-title"></h2>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
-                    <!-- Add input fields for editing craft details inside modal -->
-                    <input type="hidden" id="edit-craft-id">
-                    <input type="text" id="edit-name" placeholder="Name">
-                    <input type="text" id="edit-description" placeholder="Description">
-                    <p id="edit-supplies-p">
-                        <label class="inline">Supplies:</label>
-                        <a href="#" id="add-edit-supply">Add Supply</a>
-                    <section id="edit-supply-boxes"></section>
-                    </p>
-
-                    <!-- Add Save Edits button -->
-                    <button type="button" id="save-edits-button">Save Edits</button>
-
+                    <!-- Add a form to modify craft details inside the modal -->
+                    <form id="edit-craft-form" class="hidden">
+                        <p>
+                            <label for="edit-name">Name:</label>
+                            <input type="text" id="edit-name" name="name" required />
+                        </p>
+                        <p>
+                            <label for="edit-description">Description:</label>
+                            <input type="text" id="edit-description" name="description" required />
+                        </p>
+                        <p>
+                            <label for="edit-supplies">Supplies:</label>
+                            <input type="text" id="edit-supplies" name="supplies" required />
+                        </p>
+                        <p>
+                            <label for="edit-img">Image:</label>
+                            <input type="file" id="edit-img" name="img" accept="image/*" />
+                        </p>
+                        <p>
+                            <button type="button" id="cancel-edit-button">Cancel</button>
+                            <button type="submit">Save Edits</button>
+                        </p>
+                    </form>
                 </div>
             </div>
         </div>

@@ -368,6 +368,31 @@ app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
     res.json(crafts);
 });
 
+// Add route for updating craft details
+app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
+    const craftId = parseInt(req.params.id);
+    const craftIndex = crafts.findIndex((craft) => craft._id === craftId);
+
+    if (craftIndex === -1) {
+        res.status(404).send("Craft not found");
+        return;
+    }
+
+    const updatedCraft = {
+        _id: craftId,
+        name: req.body.name,
+        description: req.body.description,
+        supplies: req.body.supplies.split(","),
+    };
+
+    if (req.file) {
+        updatedCraft.img = "images/" + req.file.filename;
+    }
+
+    crafts[craftIndex] = updatedCraft;
+    res.json(updatedCraft.img); // Sending back updated image URL
+});
+
 
 const validateCraft = (craft) => {
     const schema = Joi.object({

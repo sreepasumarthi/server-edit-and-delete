@@ -213,74 +213,62 @@ document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
 
-// Function to open modal for editing craft details
-const openEditModal = (craft) => {
-    const modal = document.getElementById("myModal");
-    const editCraftId = document.getElementById("edit-craft-id");
+const openEditForm = (craft) => {
+    const editForm = document.getElementById("edit-craft-form");
     const editName = document.getElementById("edit-name");
     const editDescription = document.getElementById("edit-description");
-    const editSupplyBoxes = document.getElementById("edit-supply-boxes");
+    const editSupplies = document.getElementById("edit-supplies");
+    const editImg = document.getElementById("edit-img");
 
-    editCraftId.value = craft._id;
     editName.value = craft.name;
     editDescription.value = craft.description;
-    editSupplyBoxes.innerHTML = ""; // Clear previous supplies
+    editSupplies.value = craft.supplies.join(", ");
+    editImg.value = craft.img; // Assuming you want to display the current image
 
-    craft.supplies.forEach((supply) => {
-        const input = document.createElement("input");
-        input.type = "text";
-        input.value = supply;
-        editSupplyBoxes.appendChild(input);
-    });
+    editForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(editForm);
+        try {
+            const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craft._id}`, {
+                method: "PUT",
+                body: formData,
+            });
 
-    modal.style.display = "block";
-};
+            if (!response.ok) {
+                throw new Error("Error updating data");
+            }
 
-// Function to save edited craft details
-const saveEdits = async () => {
-    const editCraftId = document.getElementById("edit-craft-id").value;
-    const editName = document.getElementById("edit-name").value;
-    const editDescription = document.getElementById("edit-description").value;
-    const editSupplies = getEditSupplies();
+            // Update local craft details
+            craft.name = editName.value;
+            craft.description = editDescription.value;
+            craft.supplies = editSupplies.value.split(", ");
+            // Update image only if a new image is uploaded
+            if (editImg.files.length > 0) {
+                const imageURL = await response.json();
+                craft.img = imageURL; // Assuming server returns updated image URL
+            }
 
-    try {
-        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${editCraftId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: editName,
-                description: editDescription,
-                supplies: editSupplies
-            })
-        });
+            // Close modal after saving edits
+            closeModal();
 
-        if (!response.ok) {
-            throw new Error("Error saving edits");
+            // Refresh crafts display
+            showCrafts();
+        } catch (error) {
+            console.error(error);
         }
-
-        const updatedCrafts = await response.json();
-        // Close modal after changes are saved
-        closeModal();
-        // Refresh crafts display
-        showCrafts();
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-// Function to get edited supplies
-const getEditSupplies = () => {
-    const inputs = document.querySelectorAll("#edit-supply-boxes input");
-    let supplies = [];
-
-    inputs.forEach((input) => {
-        supplies.push(input.value);
     });
 
-    return supplies;
+    openDialog("edit-craft-form");
 };
 
-// Add event listener for Save Edits button
-document.getElementById("save-edits-button").addEventListener("click", saveEdits);
+document.getElementById("cancel-edit-button").addEventListener("click", (e) => {
+    e.preventDefault();
+    closeModal();
+});
+
+// Add event listener to each craft item to open edit form
+const galleryItems = document.querySelectorAll(".gallery-item img");
+galleryItems.forEach((img, index) => {
+    img.addEventListener("click", () => openEditForm(crafts[index]));
+});
+
