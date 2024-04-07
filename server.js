@@ -347,6 +347,15 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
     res.json(crafts);
 });
 
+app.patch("/api/crafts/:id", (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    const craft = crafts.find(c => c._id == id);
+    if (!craft) return res.status(404).send("Craft not found");
+    craft.name = name;
+    res.json(craft);
+});
+
 
 const validateCraft = (craft) => {
     const schema = Joi.object({
@@ -359,6 +368,7 @@ const validateCraft = (craft) => {
 
     return schema.validate(craft);
 };
+
 
 
 app.listen(3040, () => {

@@ -1,4 +1,94 @@
+const getCrafts = async () => {
+    try {
+        return (await fetch("https://server-get-post-n1ni.onrender.com/api/crafts")).json();
+    } catch (error) {
+        console.log("error retrieving data");
+        return "";
+    }
+};
 
+
+const openModal = (craft) => {
+    const modal = document.getElementById("myModal");
+    const modalTitle = document.getElementById("modal-title");
+    const modalDescription = document.getElementById("modal-description");
+    const modalSupplies = document.getElementById("modal-supplies");
+    const modalImage = document.getElementById("modal-image");
+
+
+    modalTitle.innerHTML = `<strong>${craft.name}</strong>`;
+    modalDescription.textContent = craft.description;
+
+
+    modalSupplies.innerHTML = "<strong>Supplies:</strong>";
+    craft.supplies.forEach((supply) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = supply;
+        modalSupplies.appendChild(listItem);
+    });
+
+
+    modalImage.src = "https://server-get-post-n1ni.onrender.com/" + craft.img;
+
+
+    modal.style.display = "block";
+
+
+    const closeModal = () => {
+        modal.style.display = "none";
+    };
+
+
+    const closeButton = document.getElementsByClassName("close")[0];
+    closeButton.addEventListener("click", closeModal);
+
+
+    window.addEventListener("click", (event) => {
+        if (event.target == modal) {
+            closeModal();
+        }
+    });
+};
+
+
+const showCrafts = async () => {
+    const craftsJSON = await getCrafts();
+    const columns = document.querySelectorAll(".column");
+
+
+    if (craftsJSON == "") {
+        columns.forEach(column => {
+            column.innerHTML = "Sorry, no crafts";
+        });
+        return;
+    }
+
+
+    let columnIndex = 0;
+    let columnCount = columns.length;
+    let columnHeights = Array.from(columns).map(() => 0); // Array to store column heights
+
+
+    craftsJSON.forEach((craft, index) => {
+        const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
+        const galleryItem = document.createElement("div");
+        galleryItem.classList.add("gallery-item");
+        const img = document.createElement("img");
+        img.src = "https://server-get-post-n1ni.onrender.com/" + craft.img;
+        img.alt = craft.name;
+        img.addEventListener("click", () => openModal(craft));
+        galleryItem.appendChild(img);
+        columns[shortestColumnIndex].appendChild(galleryItem);
+        columnHeights[shortestColumnIndex] += galleryItem.offsetHeight;
+
+
+        if (columnHeights[shortestColumnIndex] >= columns[shortestColumnIndex].offsetHeight) {
+            columnIndex++;
+            if (columnIndex === columnCount) columnIndex = 0;
+            columnHeights[shortestColumnIndex] = 0;
+        }
+    });
+};
 
 
 showCrafts();
@@ -114,49 +204,27 @@ document.getElementById("img-prev").onerror = function() {
     this.src = 'https://place-hold.it/200x300';
 };
 
+const saveEditedName = async (editedName) => {
+    const modalCraftId = document.getElementById("modal-title").getAttribute("data-craft-id");
+    try {
+        const response = await fetch(`https://server-get-post-n1ni.onrender.com/api/crafts/${modalCraftId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name: editedName })
+        });
+        if (!response.ok) {
+            throw new Error("Failed to save edited name");
+        }
+        const data = await response.json();
+        document.getElementById("modal-title").textContent = data.name;
+    } catch (error) {
+        console.error(error);
+    }
+};
 
-// Edit Craft
-$(document).on('click', '.edit-craft-button', function() {
-    var craftId = $(this).data('craft-id');
-    $.ajax({
-      method: 'GET',
-      url: '/crafts/' + craftId,
-      success: function(data) {
-        $('#edit-craft-id').val(data._id);
-        $('#edit-craft-name').val(data.name);
-        $('#edit-craft-description').val(data.description);
-        // Populate other fields if needed
-  
-        // Show the edit modal
-        $('#editModal').modal('show');
-      },
-      error: function(err) {
-        console.log(err);
-      }
-    });
-  });
-  
-  // Update Craft
-  $('#edit-craft-form').submit(function(e) {
-    e.preventDefault();
-    var craftId = $('#edit-craft-id').val();
-    var craftData = {
-      name: $('#edit-craft-name').val(),
-      description: $('#edit-craft-description').val()
-      // Add other fields if needed
-    };
-    $.ajax({
-      method: 'PUT',
-      url: '/crafts/' + craftId,
-      data: craftData,
-      success: function(data) {
-        // Close the modal
-        $('#editModal').modal('hide');
-        // Refresh craft list or update UI as needed
-      },
-      error: function(err) {
-        console.log(err);
-      }
-    });
-  });
-  
+document.getElementById("save-edited-name").addEventListener("click", () => {
+    const editedName = document.getElementById("edit-name").value;
+    saveEditedName(editedName);
+});
