@@ -8,28 +8,6 @@ const getCrafts = async () => {
 };
 
 
-const saveEditedCraft = async (editedCraft) => {
-    try {
-        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${editedCraft._id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(editedCraft)
-        });
-
-        if (!response.ok) {
-            throw new Error("Error updating craft");
-        }
-
-        // If the update is successful, close the modal and refresh the crafts list
-        closeModal();
-        showCrafts();
-    } catch (error) {
-        console.error(error);
-    }
-};
-
 
 
 const openModal = (craft) => {
@@ -87,18 +65,6 @@ const openModal = (craft) => {
         }
     });
 
-
-    const editCraftForm = document.getElementById("edit-craft-form");
-    editCraftForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const editedCraft = {
-            _id: craft._id,
-            name: document.getElementById("edit-name").value,
-            description: document.getElementById("edit-description").value,
-            supplies: document.getElementById("edit-supplies").value.split("\n")
-        };
-        saveEditedCraft(editedCraft);
-    });
 };
 
 
@@ -279,4 +245,56 @@ const addCraft = async (e) => {
 
 document.getElementById("img-prev").onerror = function() {
     this.src = 'https://place-hold.it/200x300';
+};
+
+
+// Inside window.onload
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('edit-craft')) {
+        const craftId = event.target.dataset.id;
+        const craft = getCraftById(craftId); // Implement this function to get craft details by ID
+        if (craft) {
+            populateEditForm(craft);
+            showEditForm();
+        }
+    }
+});
+
+// Function to populate the edit form with craft details
+const populateEditForm = (craft) => {
+    const form = document.getElementById("edit-craft-form");
+    form._id.value = craft._id;
+    form.name.value = craft.name;
+    form.description.value = craft.description;
+    form.supplies.value = craft.supplies.join("\n");
+    // Add code to populate image field if applicable
+};
+
+// Function to handle form submission for editing craft
+const editCraft = async (e) => {
+    e.preventDefault();
+    const form = document.getElementById("edit-craft-form");
+    const formData = new FormData(form);
+    const editedCraft = {
+        _id: form._id.value,
+        name: formData.get('name'),
+        description: formData.get('description'),
+        supplies: formData.get('supplies').split('\n'),
+        // Add code to handle image if applicable
+    };
+    try {
+        const response = await fetch(`/api/crafts/${editedCraft._id}`, {
+            method: "PUT",
+            body: JSON.stringify(editedCraft),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error("Error updating craft");
+        }
+        // Handle success
+    } catch (error) {
+        console.error(error);
+    }
 };
