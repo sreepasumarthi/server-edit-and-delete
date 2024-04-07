@@ -46,7 +46,7 @@ const openModal = (craft) => {
     });
 
     // Get reference to the edit icon for the current craft
-    const editIcon = document.getElementById("edit-icon");
+    const editIcon = modal.querySelector(".edit-icon");
 
     // Add onclick event to edit icon
     editIcon.onclick = () => {
