@@ -3,19 +3,23 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+
 /* Gallery */
 .columns {
     display: flex;
 }
+
 
 .column {
     flex: 1;
     padding: 10px;
 }
 
+
 .gallery-item {
     margin-bottom: 20px;
 }
+
 
 .gallery-item img {
     width: 100%;
@@ -24,9 +28,12 @@ body {
     transition: transform 0.3s ease-in-out;
 }
 
+
 .gallery-item:hover img {
     transform: scale(1.05);
 }
+
+
 
 
 /* Modal */
@@ -42,6 +49,7 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
+
 .modal-content {
     background-color: #fefefe;
     margin: 10% auto;
@@ -52,10 +60,12 @@ body {
     border-radius: 10px;
 }
 
+
 .modal-content-wrapper {
     display: flex;
     justify-content: space-between;
 }
+
 
 .modal-image {
     flex-shrink: 0;
@@ -63,10 +73,12 @@ body {
     margin-right: 20px;
 }
 
+
 .modal-details {
     flex-grow: 1;
     padding-left: 160px;
 }
+
 
 .close {
     color: #aaa;
@@ -76,6 +88,7 @@ body {
     cursor: pointer;
 }
 
+
 .close:hover,
 .close:focus {
     color: black;
@@ -83,11 +96,14 @@ body {
     cursor: pointer;
 }
 
+
 /*Add Craft Modal*/
+
 
 .w3-display-topright {
     cursor: pointer;
 }
+
 
 #img-prev {
     width: 200px;
@@ -96,9 +112,11 @@ body {
     border-radius: 5px;
 }
 
+
 #img-prev-section {
     margin-bottom: 10px;
 }
+
 
 .w3-modal-content {
     display: flex;
@@ -107,10 +125,13 @@ body {
 }
 
 
+
+
 #left-section {
     flex: 1;
     padding-right: 20px;
 }
+
 
 #right-section {
     display: flex;
@@ -120,15 +141,19 @@ body {
     padding-left: 20px;
 }
 
+
 #img-prev {
     width: 200px;
     height: 300px;
     border: 1px solid #ccc;
 }
 
+
 #img-prev-section input[type="file"] {
     margin-top: 10px;
 }
+
+
 
 
 .clearfix::after {
@@ -136,6 +161,7 @@ body {
     display: table;
     clear: both;
 }
+
 
 #add-craft-form button[type="submit"],
 #add-craft-form button[type="button"] {
@@ -148,6 +174,7 @@ body {
     margin-right: 10px;
 }
 
+
 #add-craft-form input[type="file"] {
     background-color: rgb(97, 9, 97);
     color: white;
@@ -158,15 +185,18 @@ body {
     margin-right: 10px;
 }
 
+
 #left {
     float: left;
     width: 40%;
 }
 
+
 #right {
     float: right;
     width: 60%;
 }
+
 
 .clearfix::after {
     content: "";
@@ -174,24 +204,29 @@ body {
     display: table;
 }
 
+
 #add-link {
     text-decoration: none;
     font-weight: bold;
 }
+
 
 header {
     margin-left: 10px;
     font-weight: bolder;
 }
 
+
 #jj {
     font-size: x-large;
     margin-left:-20pxpx;
 }
 
+
 #p{
     margin-left:-20pxpx;
 }
+
 
 #name,
 #description,
@@ -199,9 +234,11 @@ header {
     background-color: rgba(97, 9, 97, 0.3);
 }
 
+
 #add-craft-form {
     margin-left: 10px;
 }
+
 
 #add-supply {
     display: inline-block;
@@ -215,26 +252,12 @@ header {
     font-size: 14px;
 }
 
+
 #namestuff {
     margin-left:38px;
 }
 
+
 #supplies-p {
     margin-left:25px;
-}
-
-/* Add styles for the input field and button */
-#edit-name {
-    margin-bottom: 10px;
-    width: 100%;
-    padding: 5px;
-}
-
-#save-edited-name {
-    background-color: #4CAF50;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }

@@ -1,6 +1,6 @@
 const getCrafts = async () => {
     try {
-        return (await fetch("https://server-get-post-n1ni.onrender.com/api/crafts")).json();
+        return (await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts")).json();
     } catch (error) {
         console.log("error retrieving data");
         return "";
@@ -28,7 +28,7 @@ const openModal = (craft) => {
     });
 
 
-    modalImage.src = "https://server-get-post-n1ni.onrender.com/" + craft.img;
+    modalImage.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
 
 
     modal.style.display = "block";
@@ -74,7 +74,7 @@ const showCrafts = async () => {
         const galleryItem = document.createElement("div");
         galleryItem.classList.add("gallery-item");
         const img = document.createElement("img");
-        img.src = "https://server-get-post-n1ni.onrender.com/" + craft.img;
+        img.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
         img.alt = craft.name;
         img.addEventListener("click", () => openModal(craft));
         galleryItem.appendChild(img);
@@ -109,7 +109,7 @@ const addCraft = async (e) => {
 
 
     try {
-        response = await fetch("https://server-get-post-n1ni.onrender.com/api/crafts", {
+        response = await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts", {
             method: "POST",
             body: formData,
         });
@@ -204,27 +204,38 @@ document.getElementById("img-prev").onerror = function() {
     this.src = 'https://place-hold.it/200x300';
 };
 
-const saveEditedName = async (editedName) => {
-    const modalCraftId = document.getElementById("modal-title").getAttribute("data-craft-id");
+
+function editCraft(craftId) {
+    // Hide existing information
+    document.getElementById("modal-title").style.display = "none";
+    document.getElementById("modal-description").style.display = "none";
+    document.getElementById("modal-supplies").style.display = "none";
+
+    // Show input fields for editing
+    document.getElementById("edit-craft-form").style.display = "block";
+    document.getElementById("edit-craft-form").addEventListener("submit", (e) => saveEdits(e, craftId));
+}
+
+async function saveEdits(e, craftId) {
+    e.preventDefault();
+    const form = document.getElementById("edit-craft-form");
+    const formData = new FormData(form);
+    formData.append("_id", craftId); // Include craft ID in form data
+
     try {
-        const response = await fetch(`https://server-get-post-n1ni.onrender.com/api/crafts/${modalCraftId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ name: editedName })
+        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
+            method: "POST", // Use POST method
+            body: formData,
         });
+
         if (!response.ok) {
-            throw new Error("Failed to save edited name");
+            throw new Error("Error updating data");
         }
-        const data = await response.json();
-        document.getElementById("modal-title").textContent = data.name;
+
+        // Refresh the crafts after saving the edits
+        showCrafts();
+        closeModal();
     } catch (error) {
         console.error(error);
     }
-};
-
-document.getElementById("save-edited-name").addEventListener("click", () => {
-    const editedName = document.getElementById("edit-name").value;
-    saveEditedName(editedName);
-});
+}

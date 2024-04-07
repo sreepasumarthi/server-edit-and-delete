@@ -8,6 +8,8 @@ const cors = require("cors");
 app.use(cors());
 
 
+
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./public/images/");
@@ -18,12 +20,18 @@ const storage = multer.diskStorage({
 });
 
 
+
+
 const upload = multer({ storage: storage });
+
+
 
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
+
+
 
 
 let crafts = [
@@ -315,46 +323,40 @@ let crafts = [
 ];
 
 
+
+
 app.get("/api/crafts", (req, res) => {
     res.send(crafts);
 });
 
 
-app.post("/api/crafts", upload.single("img"), (req, res) => {
-    const result = validateCraft(req.body);
 
 
-    if (result.error) {
-        res.status(400).send(result.error.details[0].message);
+app.post("/api/crafts/:id", upload.single("img"), (req, res) => {
+    const { id } = req.params;
+    const craftIndex = crafts.findIndex(craft => craft._id === parseInt(id));
+
+    if (craftIndex === -1) {
+        res.status(404).send("Craft not found");
         return;
     }
 
-
-    const craft = {
-        _id: crafts.length + 1,
-        name: req.body.name,
-        description: req.body.description,
+    const updatedCraft = {
+        ...crafts[craftIndex],
+        ...req.body,
         supplies: req.body.supplies.split(","),
     };
 
-
     if (req.file) {
-        craft.img = "images/" + req.file.filename;
+        updatedCraft.img = "images/" + req.file.filename;
     }
 
-
-    crafts.push(craft);
-    res.json(crafts);
+    crafts[craftIndex] = updatedCraft;
+    res.json(updatedCraft);
 });
 
-app.patch("/api/crafts/:id", (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
-    const craft = crafts.find(c => c._id == id);
-    if (!craft) return res.status(404).send("Craft not found");
-    craft.name = name;
-    res.json(craft);
-});
+
+
 
 
 const validateCraft = (craft) => {
@@ -366,8 +368,11 @@ const validateCraft = (craft) => {
     });
 
 
+
+
     return schema.validate(craft);
 };
+
 
 
 
