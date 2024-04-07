@@ -40,7 +40,7 @@
                             <p id="supplies-p">
                                 <label class="inline">Supplies:</label>
                                 <a href="#" id="add-supply">Add Supply</a>
-                            <section id="supply-boxes"></section>
+                                <section id="supply-boxes"></section>
                             </p>
                             <p id="p">
                                 <button type="button" id="cancel-button">Cancel</button>
@@ -48,6 +48,7 @@
                             </p>
                         </form>
                         <section id="craft-details" class="hidden">
+
 
                         </section>
                     </section>
@@ -70,20 +71,43 @@
                 </div>
                 <div class="modal-details">
                     <h2 id="modal-title"></h2>
-                    <span id="edit-icon" class="edit-icon">&#9998;</span>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
-                    <!-- Edit form -->
-                    <form id="edit-form" class="hidden">
-                        <input type="hidden" id="craftId" name="craftId" value="">
-                        <!-- Add a hidden input field for craft ID -->
-                        <label for="edit-name">Name:</label>
-                        <input type="text" id="edit-name" name="name" required><br>
-                        <label for="edit-description">Description:</label>
-                        <input type="text" id="edit-description" name="description" required><br>
-                        <!-- If you have a supplies field, add it here -->
-                        <button type="submit">Save</button>
-                    </form>
+                    <!-- Inside the loop where you display craft items -->
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">Edit Craft</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="edit-craft-form">
+                                        <input type="hidden" id="edit-craft-id" name="edit-craft-id">
+                                        <div class="form-group">
+                                            <label for="edit-craft-name">Name:</label>
+                                            <input type="text" class="form-control" id="edit-craft-name"
+                                                name="edit-craft-name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit-craft-description">Description:</label>
+                                            <textarea class="form-control" id="edit-craft-description"
+                                                name="edit-craft-description" rows="3" required></textarea>
+                                        </div>
+                                        <!-- Add similar fields for supplies and image -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
