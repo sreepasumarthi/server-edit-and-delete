@@ -40,6 +40,14 @@ const openModal = (craft) => {
             closeModal();
         }
     });
+
+    const editTitle = document.getElementById("edit-title");
+    editTitle.addEventListener("click", () => {
+        modal.style.display = "none"; // Hide the modal
+        modalTitle.innerHTML = "hello, editing"; // Change the modal title
+        // Optionally, you can reset other modal content here if needed
+    });
+    
 };
 
 const showCrafts = async () => {
@@ -180,53 +188,4 @@ const addCraft = async (e) => {
 document.getElementById("img-prev").onerror = function() {
     this.src = 'https://place-hold.it/200x300';
 };
-
-/*Edit*/
-
-// Function to open edit dialog
-const openEditDialog = () => {
-    // Hide details dialog
-    document.getElementById("myModal").style.display = "none";
-    // Show edit dialog
-    document.getElementById("edit-dialog").style.display = "block";
-    // Populate edit form with current craft details
-    populateEditForm();
-};
-
-// Function to close edit dialog
-const closeEditDialog = () => {
-    // Close edit dialog
-    document.getElementById("edit-dialog").style.display = "none";
-    // Show details dialog
-    document.getElementById("myModal").style.display = "block";
-};
-
-// Function to populate edit form with current craft details
-const populateEditForm = () => {
-    // Fetch current craft details
-    const craftName = document.getElementById("modal-title").textContent;
-    const craftDescription = document.getElementById("modal-description").textContent;
-    const craftSupplies = document.getElementById("modal-supplies").innerHTML;
-
-    // Populate edit form fields with current details
-    document.getElementById("edit-dialog-details").innerHTML = `
-        <h2>Edit Craft: ${craftName}</h2>
-        <form id="edit-craft-form">
-            <label for="edit-name">Name:</label>
-            <input type="text" id="edit-name" name="edit-name" value="${craftName}" required />
-            <label for="edit-description">Description:</label>
-            <input type="text" id="edit-description" name="edit-description" value="${craftDescription}" required />
-            <label for="edit-supplies">Supplies:</label>
-            <textarea id="edit-supplies" name="edit-supplies" rows="4" required>${craftSupplies}</textarea>
-            <button type="button" onclick="closeEditDialog()">Cancel</button>
-            <button type="submit">Save</button>
-        </form>
-    `;
-};
-
-// Add event listener for edit pencil click
-document.addEventListener("DOMContentLoaded", function() {
-    // Add event listener for edit pencil click
-    document.getElementById("edit-craft").addEventListener("click", openEditDialog);
-});
 
