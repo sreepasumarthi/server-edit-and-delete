@@ -314,19 +314,50 @@ app.get("/api/crafts", (req, res) => {
     res.send(crafts);
 });
 
-app.post("/api/crafts/:id", upload.single("img"), (req, res) => {
-    const { id } = req.params;
-    const craftIndex = crafts.findIndex(craft => craft._id === parseInt(id));
+app.post("/api/crafts", upload.single("img"), (req, res) => {
+    const result = validateCraft(req.body);
+
+    if (result.error) {
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    const craft = {
+        _id: crafts.length + 1,
+        name: req.body.name,
+        description: req.body.description,
+        supplies: req.body.supplies.split(","),
+    };
+
+    if (req.file) {
+        craft.img = "images/" + req.file.filename;
+    }
+
+    crafts.push(craft);
+    res.json(crafts);
+});
+
+app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
+    const craftId = parseInt(req.params.id);
+    const craftIndex = crafts.findIndex(craft => craft._id === craftId);
 
     if (craftIndex === -1) {
         res.status(404).send("Craft not found");
         return;
     }
 
+    const result = validateCraft(req.body);
+
+    if (result.error) {
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
     const updatedCraft = {
-        ...crafts[craftIndex],
-        ...req.body,
-        supplies: req.body.supplies.split(","),
+        _id: craftId,
+        name: req.body.name,
+        description: req.body.description,
+        supplies: req.body.supplies.split(",")
     };
 
     if (req.file) {
@@ -336,6 +367,7 @@ app.post("/api/crafts/:id", upload.single("img"), (req, res) => {
     crafts[craftIndex] = updatedCraft;
     res.json(updatedCraft);
 });
+
 
 const validateCraft = (craft) => {
     const schema = Joi.object({

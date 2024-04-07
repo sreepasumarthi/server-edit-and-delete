@@ -21,11 +21,11 @@
                         <section class="columns">
                             <p id="img-prev-section">
                                 <img id="img-prev" src="https://place-hold.it/200x300">
-                                <input type="file" id="img" name="img" accept="image/*"/>
+                                <input type="file" id="img" name="img" accept="image/*" />
                             </p>
                         </section>
                     </section>
-                    <section id ="right">
+                    <section id="right">
                         <h2 id="jj">Make Changes to Your Craft</h2>
                         <form id="add-craft-form" method="post" class="hidden">
                             <p id="namestuff">
@@ -36,11 +36,11 @@
                                 <label for="description">Description:</label>
                                 <input type="text" id="description" name="description" required />
                             </p>
-   
+
                             <p id="supplies-p">
                                 <label class="inline">Supplies:</label>
                                 <a href="#" id="add-supply">Add Supply</a>
-                                <section id="supply-boxes"></section>
+                            <section id="supply-boxes"></section>
                             </p>
                             <p id="p">
                                 <button type="button" id="cancel-button">Cancel</button>
@@ -48,6 +48,7 @@
                             </p>
                         </form>
                         <section id="craft-details" class="hidden">
+
                         </section>
                     </section>
                 </section>
@@ -69,23 +70,27 @@
                 </div>
                 <div class="modal-details">
                     <h2 id="modal-title"></h2>
-                    <span id="edit-icon" class="edit-icon" onclick="editCraft()">🖉</span>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
-                    <form id="edit-craft-form" class="hidden" onsubmit="saveEdits()">
+                    <form id="edit-craft-form" class="hidden">
                         <label for="edit-name">Name:</label>
-                        <input type="text" id="edit-name" name="name" required><br>
+                        <input type="text" id="edit-name" name="name" required />
                         <label for="edit-description">Description:</label>
-                        <input type="text" id="edit-description" name="description" required><br>
-                        <label for="edit-supplies">Supplies:</label>
-                        <input type="text" id="edit-supplies" name="supplies" required><br>
-                        <input type="file" id="edit-img" name="img" accept="image/*"><br>
+                        <input type="text" id="edit-description" name="description" required />
+                        <label for="edit-img">Image:</label>
+                        <input type="file" id="edit-img" name="img" accept="image/*"/>
+                        <label>Supplies:</label>
+                        <a href="#" id="add-edit-supply">Add Supply</a>
+                        <div id="edit-supply-boxes"></div>
+                        <button type="button" id="cancel-edit-button">Cancel</button>
                         <button type="submit">Save Edits</button>
                     </form>
+                    <button id="edit-craft-button">Edit Craft</button>
                 </div>
             </div>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
