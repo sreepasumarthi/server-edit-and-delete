@@ -209,6 +209,7 @@ const editCraft = async () => {
     }
 };
 
+
 const getEditSupplies = () => {
     const inputs = document.querySelectorAll("#edit-supply-boxes input");
     let supplies = [];
