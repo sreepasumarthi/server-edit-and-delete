@@ -41,13 +41,12 @@ const openModal = (craft) => {
         }
     });
 
-    const editTitle = document.getElementById("edit-title");
-    editTitle.addEventListener("click", () => {
-        modal.style.display = "none"; // Hide the modal
-        modalTitle.innerHTML = "hello, editing"; // Change the modal title
-        // Optionally, you can reset other modal content here if needed
+    // Event listener for the edit icon
+    editIcon.addEventListener("click", () => {
+        // Your edit functionality here
+        // For now, let's just log a message
+        console.log("Edit icon clicked");
     });
-    
 };
 
 const showCrafts = async () => {
