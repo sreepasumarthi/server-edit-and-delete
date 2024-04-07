@@ -347,30 +347,34 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
     res.json(crafts);
 });
 
-// Add a new endpoint to handle craft updates
 app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
     const craftId = parseInt(req.params.id);
-    const craftIndex = crafts.findIndex(craft => craft._id === craftId);
 
+    const craftIndex = crafts.findIndex(craft => craft._id === craftId);
     if (craftIndex === -1) {
-        return res.status(404).send("Craft not found");
+        res.status(404).send("Craft not found");
+        return;
     }
 
     const result = validateCraft(req.body);
-
     if (result.error) {
-        return res.status(400).send(result.error.details[0].message);
+        res.status(400).send(result.error.details[0].message);
+        return;
     }
 
-    // Update the craft details
-    crafts[craftIndex].name = req.body.name;
-    crafts[craftIndex].description = req.body.description;
-    crafts[craftIndex].supplies = req.body.supplies.split(",");
+    const craft = {
+        ...crafts[craftIndex],
+        name: req.body.name,
+        description: req.body.description,
+        supplies: req.body.supplies.split(","),
+    };
+
     if (req.file) {
-        crafts[craftIndex].img = "images/" + req.file.filename;
+        craft.img = "images/" + req.file.filename;
     }
 
-    res.json(crafts[craftIndex]);
+    crafts[craftIndex] = craft;
+    res.json(crafts);
 });
 
 const validateCraft = (craft) => {
