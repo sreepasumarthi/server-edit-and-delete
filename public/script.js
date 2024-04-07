@@ -40,6 +40,17 @@ const openModal = (craft) => {
             closeModal();
         }
     });
+
+     // Event listener for the edit icon
+     editIcon.addEventListener("click", () => {
+        // Hide modal content
+        modalTitle.style.display = "none";
+        modalDescription.style.display = "none";
+        modalSupplies.style.display = "none";
+
+        // Display "hello world" text
+        modal.innerHTML = "<p>Hello World</p>";
+    })
 };
 
 const showCrafts = async () => {
