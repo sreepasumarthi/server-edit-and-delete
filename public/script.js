@@ -45,9 +45,47 @@ const openModal = (craft) => {
         modalTitle.style.display = "none";
         modalDescription.style.display = "none";
         modalSupplies.style.display = "none";
-
+        editForm.style.display = "block"; // Show the edit form
+        populateEditForm(craft); // Populate edit form with current craft details
     };
 };
+
+// Function to populate the edit form with current craft details
+const populateEditForm = (craft) => {
+    document.getElementById("edit-name").value = craft.name;
+    document.getElementById("edit-description").value = craft.description;
+    document.getElementById("edit-img-prev").src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
+    // You may also need to populate the supplies field here if you have one
+};
+
+// Function to handle form submission for editing craft
+const editCraft = async (e) => {
+    e.preventDefault();
+    const form = document.getElementById("edit-form");
+    const formData = new FormData(form);
+    let response;
+
+    try {
+        response = await fetch("URL_TO_UPDATE_CRAFT", { // Replace URL_TO_UPDATE_CRAFT with your API endpoint to update craft
+            method: "PUT", // Assuming you're using PUT method to update
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error("Error updating craft");
+        }
+
+        // Optionally, you can handle the response if needed
+
+        document.getElementById("myModal").style.display = "none";
+        showCrafts(); // Refresh crafts after updating
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// Event listener for form submission when editing craft
+document.getElementById("edit-form").addEventListener("submit", editCraft);
 
 const showCrafts = async () => {
     const craftsJSON = await getCrafts();
