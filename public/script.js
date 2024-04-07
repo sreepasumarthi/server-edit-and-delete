@@ -40,13 +40,6 @@ const openModal = (craft) => {
             closeModal();
         }
     });
-
-    // Event listener for the edit icon
-    editIcon.addEventListener("click", () => {
-        // Your edit functionality here
-        // For now, let's just log a message
-        console.log("Edit icon clicked");
-    });
 };
 
 const showCrafts = async () => {
