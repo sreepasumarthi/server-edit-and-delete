@@ -59,6 +59,7 @@ const populateEditForm = (craft) => {
 };
 
 // Function to handle form submission for editing craft
+// Function to handle form submission for editing craft
 const editCraft = async (e) => {
     e.preventDefault();
     const form = document.getElementById("edit-form");
@@ -66,7 +67,11 @@ const editCraft = async (e) => {
     let response;
 
     try {
-        response = await fetch("URL_TO_UPDATE_CRAFT", { // Replace URL_TO_UPDATE_CRAFT with your API endpoint to update craft
+        // Assuming the craft ID is passed as a hidden input field in the form
+        const craftId = formData.get("craftId"); // Adjust this based on your actual implementation
+
+        // Send the updated craft details to the server
+        response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
             method: "PUT", // Assuming you're using PUT method to update
             body: formData,
         });
@@ -83,6 +88,7 @@ const editCraft = async (e) => {
         console.error(error);
     }
 };
+
 
 // Event listener for form submission when editing craft
 document.getElementById("edit-form").addEventListener("submit", editCraft);
@@ -117,7 +123,7 @@ const showCrafts = async () => {
         if (columnHeights[shortestColumnIndex] >= columns[shortestColumnIndex].offsetHeight) {
             columnIndex++;
             if (columnIndex === columnCount) columnIndex = 0;
-            columnHeights[shortestColumnIndex] = 0; 
+            columnHeights[shortestColumnIndex] = 0;
         }
     });
 };
@@ -149,65 +155,65 @@ const addCraft = async (e) => {
         await response.json();
         resetForm();
         document.getElementById("dialog").style.display = "none";
-        
+
         showCrafts();
     } catch (error) {
         console.error(error);
     }
 };
-  
-  const getSupplies = () => {
+
+const getSupplies = () => {
     const inputs = document.querySelectorAll("#supply-boxes input");
     let supplies = [];
-  
-    inputs.forEach((input) => {
-      supplies.push(input.value);
-    });
-  
-    return supplies.join(",");
-  };
 
-  document.getElementById("cancel-button").addEventListener("click", (e) => {
+    inputs.forEach((input) => {
+        supplies.push(input.value);
+    });
+
+    return supplies.join(",");
+};
+
+document.getElementById("cancel-button").addEventListener("click", (e) => {
     e.preventDefault();
     resetForm();
     document.getElementById("dialog").style.display = "none";
 });
-  
-  const resetForm = () => {
+
+const resetForm = () => {
     const form = document.getElementById("add-craft-form");
     form.reset();
     document.getElementById("supply-boxes").innerHTML = "";
     document.getElementById("img-prev").src = "";
-  };
-  
-  const showCraftForm = (e) => {
+};
+
+const showCraftForm = (e) => {
     e.preventDefault();
     openDialog("add-craft-form");
     resetForm();
-  };
-  
-  const addSupply = (e) => {
+};
+
+const addSupply = (e) => {
     e.preventDefault();
     const section = document.getElementById("supply-boxes");
     const input = document.createElement("input");
     input.type = "text";
     section.append(input);
-  };
+};
 
-  const openDialog = (id) => {
+const openDialog = (id) => {
     document.getElementById("dialog").style.display = "block";
     document.querySelectorAll("#dialog-details > *").forEach((item) => {
-      item.classList.add("hidden");
+        item.classList.add("hidden");
     });
     document.getElementById(id).classList.remove("hidden");
-  };
-  
-  showCrafts();
-  document.getElementById("add-craft-form").onsubmit = addCraft;
-  document.getElementById("add-link").onclick = showCraftForm;
-  document.getElementById("add-supply").onclick = addSupply;
-  
-  document.getElementById("img").onchange = (e) => {
+};
+
+showCrafts();
+document.getElementById("add-craft-form").onsubmit = addCraft;
+document.getElementById("add-link").onclick = showCraftForm;
+document.getElementById("add-supply").onclick = addSupply;
+
+document.getElementById("img").onchange = (e) => {
     if (!e.target.files.length) {
         document.getElementById("img-prev").src = "";
         return;
@@ -222,7 +228,7 @@ const addCraft = async (e) => {
     reader.readAsDataURL(e.target.files[0]);
 };
 
-document.getElementById("img-prev").onerror = function() {
+document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
 

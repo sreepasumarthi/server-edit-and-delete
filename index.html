@@ -21,11 +21,11 @@
                         <section class="columns">
                             <p id="img-prev-section">
                                 <img id="img-prev" src="https://place-hold.it/200x300">
-                                <input type="file" id="img" name="img" accept="image/*"/>
+                                <input type="file" id="img" name="img" accept="image/*" />
                             </p>
                         </section>
                     </section>
-                    <section id ="right">
+                    <section id="right">
                         <h2 id="jj">Make Changes to Your Craft</h2>
                         <form id="add-craft-form" method="post" class="hidden">
                             <p id="namestuff">
@@ -36,11 +36,11 @@
                                 <label for="description">Description:</label>
                                 <input type="text" id="description" name="description" required />
                             </p>
-    
+
                             <p id="supplies-p">
                                 <label class="inline">Supplies:</label>
                                 <a href="#" id="add-supply">Add Supply</a>
-                                <section id="supply-boxes"></section>
+                            <section id="supply-boxes"></section>
                             </p>
                             <p id="p">
                                 <button type="button" id="cancel-button">Cancel</button>
@@ -74,18 +74,22 @@
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
                     <!-- Edit form -->
-                <form id="edit-form" class="hidden">
-                    <label for="edit-name">Name:</label>
-                    <input type="text" id="edit-name" name="name" required><br>
-                    <label for="edit-description">Description:</label>
-                    <input type="text" id="edit-description" name="description" required><br>
-                    <!-- If you have a supplies field, add it here -->
-                    <button type="submit">Save</button>
-                </form>
+                    <form id="edit-form" class="hidden">
+                        <input type="hidden" id="craftId" name="craftId" value="">
+                        <!-- Add a hidden input field for craft ID -->
+                        <label for="edit-name">Name:</label>
+                        <input type="text" id="edit-name" name="name" required><br>
+                        <label for="edit-description">Description:</label>
+                        <input type="text" id="edit-description" name="description" required><br>
+                        <!-- If you have a supplies field, add it here -->
+                        <button type="submit">Save</button>
+                    </form>
+
                 </div>
             </div>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
