@@ -7,6 +7,7 @@ const getCrafts = async () => {
     }
 };
 
+
 const openModal = (craft) => {
     const modal = document.getElementById("myModal");
     const modalTitle = document.getElementById("modal-title");
@@ -14,8 +15,10 @@ const openModal = (craft) => {
     const modalSupplies = document.getElementById("modal-supplies");
     const modalImage = document.getElementById("modal-image");
 
+
     modalTitle.innerHTML = `<strong>${craft.name}</strong>`;
     modalDescription.textContent = craft.description;
+
 
     modalSupplies.innerHTML = "<strong>Supplies:</strong>";
     craft.supplies.forEach((supply) => {
@@ -24,16 +27,21 @@ const openModal = (craft) => {
         modalSupplies.appendChild(listItem);
     });
 
+
     modalImage.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
 
+
     modal.style.display = "block";
+
 
     const closeModal = () => {
         modal.style.display = "none";
     };
 
+
     const closeButton = document.getElementsByClassName("close")[0];
     closeButton.addEventListener("click", closeModal);
+
 
     window.addEventListener("click", (event) => {
         if (event.target == modal) {
@@ -42,9 +50,11 @@ const openModal = (craft) => {
     });
 };
 
+
 const showCrafts = async () => {
     const craftsJSON = await getCrafts();
     const columns = document.querySelectorAll(".column");
+
 
     if (craftsJSON == "") {
         columns.forEach(column => {
@@ -53,9 +63,11 @@ const showCrafts = async () => {
         return;
     }
 
+
     let columnIndex = 0;
     let columnCount = columns.length;
     let columnHeights = Array.from(columns).map(() => 0); // Array to store column heights
+
 
     craftsJSON.forEach((craft, index) => {
         const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
@@ -69,6 +81,7 @@ const showCrafts = async () => {
         columns[shortestColumnIndex].appendChild(galleryItem);
         columnHeights[shortestColumnIndex] += galleryItem.offsetHeight;
 
+
         if (columnHeights[shortestColumnIndex] >= columns[shortestColumnIndex].offsetHeight) {
             columnIndex++;
             if (columnIndex === columnCount) columnIndex = 0;
@@ -77,19 +90,9 @@ const showCrafts = async () => {
     });
 };
 
+
 showCrafts();
 
-const editButton = document.createElement("a");
-  editButton.innerHTML = "&#9998; ";
-  editButton.classList.add("icon");
-  editButton.id = "edit-button";
-  section.append(editButton);
-
-editButton.onclick = (e) => {
-    e.preventDefault();
-    populateForm(craft);
-    showEditForm();
-  };
 
 const addCraft = async (e) => {
     e.preventDefault();
@@ -101,7 +104,9 @@ const addCraft = async (e) => {
         formData.append("img", imgInput.files[0]);
     }
 
+
     formData.append("supplies", getSupplies());
+
 
     try {
         response = await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts", {
@@ -109,54 +114,45 @@ const addCraft = async (e) => {
             body: formData,
         });
 
+
         if (!response.ok) {
             throw new Error("Error posting data");
         }
+
 
         await response.json();
         resetForm();
         document.getElementById("dialog").style.display = "none";
 
+
+        // Call showCrafts only once after adding the craft
         showCrafts();
     } catch (error) {
         console.error(error);
     }
-
-    if (form._id.value != -1) {
-        displayDetails(response);
-        result.innerHTML = "Craft updated successfully";
-        result.style.color = "green";
-        showCrafts();
-        setTimeout(() => {
-          result.innerHTML = "";
-        }, 3040);
-      }
 };
 
-const populateForm = (craft) => {
-    const form = document.getElementById("add-craft-form");
-    form._id.value = craft._id;
-    form.craftName.value = craft.name;
-    console.log(craft.name);
-    form.description.value = craft.description;
-  };
-  
+
 const getSupplies = () => {
     const inputs = document.querySelectorAll("#supply-boxes input");
     let supplies = [];
+
 
     inputs.forEach((input) => {
         supplies.push(input.value);
     });
 
+
     return supplies.join(",");
 };
+
 
 document.getElementById("cancel-button").addEventListener("click", (e) => {
     e.preventDefault();
     resetForm();
     document.getElementById("dialog").style.display = "none";
 });
+
 
 const resetForm = () => {
     const form = document.getElementById("add-craft-form");
@@ -165,11 +161,13 @@ const resetForm = () => {
     document.getElementById("img-prev").src = "";
 };
 
+
 const showCraftForm = (e) => {
     e.preventDefault();
     openDialog("add-craft-form");
     resetForm();
 };
+
 
 const addSupply = (e) => {
     e.preventDefault();
@@ -179,6 +177,7 @@ const addSupply = (e) => {
     section.append(input);
 };
 
+
 const openDialog = (id) => {
     document.getElementById("dialog").style.display = "block";
     document.querySelectorAll("#dialog-details > *").forEach((item) => {
@@ -187,10 +186,12 @@ const openDialog = (id) => {
     document.getElementById(id).classList.remove("hidden");
 };
 
+
 showCrafts();
 document.getElementById("add-craft-form").onsubmit = addCraft;
 document.getElementById("add-link").onclick = showCraftForm;
 document.getElementById("add-supply").onclick = addSupply;
+
 
 document.getElementById("img").onchange = (e) => {
     if (!e.target.files.length) {
@@ -207,6 +208,79 @@ document.getElementById("img").onchange = (e) => {
     reader.readAsDataURL(e.target.files[0]);
 };
 
+
 document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
+
+// Function to open modal for editing craft details
+const openEditModal = (craft) => {
+    const modal = document.getElementById("myModal");
+    const editCraftId = document.getElementById("edit-craft-id");
+    const editName = document.getElementById("edit-name");
+    const editDescription = document.getElementById("edit-description");
+    const editSupplyBoxes = document.getElementById("edit-supply-boxes");
+
+    editCraftId.value = craft._id;
+    editName.value = craft.name;
+    editDescription.value = craft.description;
+    editSupplyBoxes.innerHTML = ""; // Clear previous supplies
+
+    craft.supplies.forEach((supply) => {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = supply;
+        editSupplyBoxes.appendChild(input);
+    });
+
+    modal.style.display = "block";
+};
+
+// Function to save edited craft details
+const saveEdits = async () => {
+    const editCraftId = document.getElementById("edit-craft-id").value;
+    const editName = document.getElementById("edit-name").value;
+    const editDescription = document.getElementById("edit-description").value;
+    const editSupplies = getEditSupplies();
+
+    try {
+        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${editCraftId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: editName,
+                description: editDescription,
+                supplies: editSupplies
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Error saving edits");
+        }
+
+        const updatedCrafts = await response.json();
+        // Close modal after changes are saved
+        closeModal();
+        // Refresh crafts display
+        showCrafts();
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// Function to get edited supplies
+const getEditSupplies = () => {
+    const inputs = document.querySelectorAll("#edit-supply-boxes input");
+    let supplies = [];
+
+    inputs.forEach((input) => {
+        supplies.push(input.value);
+    });
+
+    return supplies;
+};
+
+// Add event listener for Save Edits button
+document.getElementById("save-edits-button").addEventListener("click", saveEdits);

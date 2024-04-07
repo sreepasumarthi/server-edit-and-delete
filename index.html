@@ -71,6 +71,19 @@
                     <h2 id="modal-title"></h2>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
+                    <!-- Add input fields for editing craft details inside modal -->
+                    <input type="hidden" id="edit-craft-id">
+                    <input type="text" id="edit-name" placeholder="Name">
+                    <input type="text" id="edit-description" placeholder="Description">
+                    <p id="edit-supplies-p">
+                        <label class="inline">Supplies:</label>
+                        <a href="#" id="add-edit-supply">Add Supply</a>
+                    <section id="edit-supply-boxes"></section>
+                    </p>
+
+                    <!-- Add Save Edits button -->
+                    <button type="button" id="save-edits-button">Save Edits</button>
+
                 </div>
             </div>
         </div>
