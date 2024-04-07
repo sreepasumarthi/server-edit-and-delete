@@ -1,6 +1,6 @@
 const getCrafts = async () => {
     try {
-        return (await fetch("https://server-get-post-n1ni.onrender.com/api/crafts")).json();
+        return (await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts")).json();
     } catch (error) {
         console.log("error retrieving data");
         return "";
@@ -24,7 +24,7 @@ const openModal = (craft) => {
         modalSupplies.appendChild(listItem);
     });
 
-    modalImage.src = "https://server-get-post-n1ni.onrender.com/" + craft.img;
+    modalImage.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
 
     modal.style.display = "block";
 
@@ -62,7 +62,7 @@ const showCrafts = async () => {
         const galleryItem = document.createElement("div");
         galleryItem.classList.add("gallery-item");
         const img = document.createElement("img");
-        img.src = "https://server-get-post-n1ni.onrender.com/" + craft.img;
+        img.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
         img.alt = craft.name;
         img.addEventListener("click", () => openModal(craft));
         galleryItem.appendChild(img);
@@ -92,7 +92,7 @@ const addCraft = async (e) => {
     formData.append("supplies", getSupplies());
 
     try {
-        response = await fetch("https://server-get-post-n1ni.onrender.com/api/crafts", {
+        response = await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts", {
             method: "POST",
             body: formData,
         });
@@ -105,7 +105,6 @@ const addCraft = async (e) => {
         resetForm();
         document.getElementById("dialog").style.display = "none";
         
-        // Call showCrafts only once after adding the craft
         showCrafts();
     } catch (error) {
         console.error(error);
