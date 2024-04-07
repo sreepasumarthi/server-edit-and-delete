@@ -8,6 +8,28 @@ const getCrafts = async () => {
 };
 
 
+const saveEditedCraft = async (editedCraft) => {
+    try {
+        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${editedCraft._id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(editedCraft)
+        });
+
+        if (!response.ok) {
+            throw new Error("Error updating craft");
+        }
+
+        // If the update is successful, close the modal and refresh the crafts list
+        closeModal();
+        showCrafts();
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 
 
 const openModal = (craft) => {
@@ -78,30 +100,6 @@ const openModal = (craft) => {
         saveEditedCraft(editedCraft);
     });
 };
-
-const saveEditedCraft = async (editedCraft) => {
-    try {
-        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${editedCraft._id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(editedCraft)
-        });
-
-        if (!response.ok) {
-            throw new Error("Error updating craft");
-        }
-
-        // If the update is successful, close the modal and refresh the crafts list
-        closeModal();
-        showCrafts();
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-
 
 
 const showCrafts = async () => {

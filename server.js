@@ -337,6 +337,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
     res.json(crafts);
 });
 
+
 app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
     const craftId = parseInt(req.params.id);
     const craftIndex = crafts.findIndex(craft => craft._id === craftId);
@@ -363,8 +364,9 @@ app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
     }
 
     crafts[craftIndex] = editedCraft;
-    res.json(crafts);
+    res.json(editedCraft); // Return the edited craft as response
 });
+
 
 
 const validateCraft = (craft) => {
