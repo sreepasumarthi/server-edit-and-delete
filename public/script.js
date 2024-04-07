@@ -44,14 +44,17 @@ const openModal = (craft) => {
     const editIcon = document.getElementById("edit-icon");
 
     editIcon.onclick = () => {
-        // Hide existing stuff in the modal
+        // Hide existing content inside the modal
         modalTitle.style.display = "none";
         modalDescription.style.display = "none";
         modalSupplies.style.display = "none";
     
         // Show "hiii" message
-        modal.innerHTML = "<p>hiii</p>";
+        const message = document.createElement("p");
+        message.textContent = "hiii";
+        modal.appendChild(message);
     };
+    
     
 };
 
