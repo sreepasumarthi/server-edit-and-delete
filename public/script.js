@@ -225,4 +225,8 @@ const populateEditForm = () => {
 };
 
 // Add event listener for edit pencil click
-document.getElementById("edit-craft").addEventListener("click", openEditDialog);
+document.addEventListener("DOMContentLoaded", function() {
+    // Add event listener for edit pencil click
+    document.getElementById("edit-craft").addEventListener("click", openEditDialog);
+});
+
