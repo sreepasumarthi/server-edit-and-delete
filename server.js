@@ -337,21 +337,20 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
     res.json(crafts);
 });
 
-
-app.put("/api/crafts/:id", (req, res) => {
-    const craftId = parseInt(req.params.id);
-    const craftIndex = crafts.findIndex(craft => craft._id === craftId);
-    if (craftIndex === -1) {
-        return res.status(404).send("Craft not found");
+app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
+    const id = parseInt(req.params.id);
+    const craft = crafts.find((craftCheck) => craftCheck._id === id);
+  
+    const result = validateCraft(req.body);
+    if (result.error) {
+      res.status(400).send(result.error.details[0].message);
+      return;
     }
-    const updatedCraft = req.body;
-    // Update the craft in the crafts array
-    crafts[craftIndex] = updatedCraft;
-    res.json(updatedCraft);
-});
-
-
-
+    // update craft details
+    craft.name = req.body.name;
+    craft.description = req.body.description;
+    res.send(craft);
+  });
 
 const validateCraft = (craft) => {
     const schema = Joi.object({
