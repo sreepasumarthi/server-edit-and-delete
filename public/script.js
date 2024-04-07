@@ -8,43 +8,49 @@ const getCrafts = async () => {
 };
 
 const openModal = (craft) => {
+    // Get references to modal elements
     const modal = document.getElementById("myModal");
     const modalTitle = document.getElementById("modal-title");
     const modalDescription = document.getElementById("modal-description");
     const modalSupplies = document.getElementById("modal-supplies");
     const modalImage = document.getElementById("modal-image");
 
+    // Set modal content based on the current craft
     modalTitle.innerHTML = `<strong>${craft.name}</strong>`;
     modalDescription.textContent = craft.description;
-
     modalSupplies.innerHTML = "<strong>Supplies:</strong>";
     craft.supplies.forEach((supply) => {
         const listItem = document.createElement("li");
         listItem.textContent = supply;
         modalSupplies.appendChild(listItem);
     });
-
     modalImage.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
 
+    // Display the modal
     modal.style.display = "block";
 
+    // Define function to close the modal
     const closeModal = () => {
         modal.style.display = "none";
     };
 
+    // Add event listener to close button
     const closeButton = document.getElementsByClassName("close")[0];
     closeButton.addEventListener("click", closeModal);
 
+    // Add event listener to close modal when clicked outside of it
     window.addEventListener("click", (event) => {
         if (event.target == modal) {
             closeModal();
         }
     });
 
+    // Get reference to the edit icon for the current craft
     const editIcon = document.getElementById("edit-icon");
 
+    // Add onclick event to edit icon
     editIcon.onclick = () => {
-        // Hide existing content inside the modal
+        // Hide existing content inside the modal for the current craft
         modalTitle.style.display = "none";
         modalDescription.style.display = "none";
         modalSupplies.style.display = "none";
@@ -54,8 +60,6 @@ const openModal = (craft) => {
         message.textContent = "hiii";
         modal.appendChild(message);
     };
-    
-    
 };
 
 const showCrafts = async () => {
