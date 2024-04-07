@@ -81,7 +81,7 @@ const openModal = (craft) => {
 
 const saveEditedCraft = async (editedCraft) => {
     try {
-        const response = await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts", {
+        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${editedCraft._id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -100,6 +100,7 @@ const saveEditedCraft = async (editedCraft) => {
         console.error(error);
     }
 };
+
 
 
 
