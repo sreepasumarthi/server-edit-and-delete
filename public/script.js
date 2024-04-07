@@ -298,3 +298,8 @@ const editCraft = async (e) => {
         console.error(error);
     }
 };
+
+const getCraftById = (id) => {
+    // Iterate through the crafts array to find the craft with the given ID
+    return crafts.find(craft => craft._id === parseInt(id));
+};
