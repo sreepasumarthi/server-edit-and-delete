@@ -124,8 +124,6 @@ const addCraft = async (e) => {
         resetForm();
         document.getElementById("dialog").style.display = "none";
 
-
-        // Call showCrafts only once after adding the craft
         showCrafts();
     } catch (error) {
         console.error(error);
@@ -213,79 +211,31 @@ document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
 
-// Add event listener for the edit button
-document.getElementById("edit-craft-btn").addEventListener("click", () => editCraft(craft));
+const editCraft = async (e) => {
+    e.preventDefault();
+    const form = document.getElementById("edit-craft-form");
+    const formData = new FormData(form);
+    const craftId = form.getAttribute("data-craft-id");
+    
+    // Make a PUT request to update the craft
+    try {
+        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
+            method: "PUT",
+            body: formData,
+        });
 
-// Add event listener for the edit button
-document.getElementById("edit-craft-btn").addEventListener("click", editCraft);
-
-// Function to handle editing a craft
-const editCraft = (craft) => {
-    // Hide existing craft details
-    document.getElementById("modal-description").style.display = "none";
-    document.getElementById("modal-supplies").style.display = "none";
-    document.getElementById("edit-craft-btn").style.display = "none";
-
-    // Show edit form
-    const editForm = document.createElement("form");
-    editForm.id = "edit-craft-form";
-    editForm.innerHTML = `
-        <label for="edit-name">Name:</label>
-        <input type="text" id="edit-name" name="name" required value="${craft.name}" />
-        <label for="edit-description">Description:</label>
-        <input type="text" id="edit-description" name="description" required value="${craft.description}" />
-        <label class="inline">Supplies:</label>
-        <a href="#" id="add-supply">Add Supply</a>
-        <section id="edit-supply-boxes">
-            ${craft.supplies.map(supply => `<input type="text" value="${supply}" />`).join("")}
-        </section>
-        <input type="file" id="edit-img" name="img" accept="image/*" />
-        <button type="button" id="cancel-edit-btn">Cancel</button>
-        <button type="submit">Save Edits</button>
-    `;
-    document.querySelector(".modal-details").appendChild(editForm);
-
-    // Hide original craft image
-    document.getElementById("modal-image").style.display = "none";
-
-    // Event listener for cancel edit button
-    document.getElementById("cancel-edit-btn").addEventListener("click", cancelEditCraft);
-
-    // Event listener for edit form submission
-    editForm.onsubmit = async (e) => {
-        e.preventDefault();
-        const formData = new FormData(editForm);
-        const imgInput = document.getElementById("edit-img");
-        if (imgInput.files.length > 0) {
-            formData.append("img", imgInput.files[0]);
+        if (!response.ok) {
+            throw new Error("Error updating craft");
         }
 
-        const supplies = Array.from(document.querySelectorAll("#edit-supply-boxes input")).map(input => input.value);
-        formData.append("supplies", supplies.join(","));
+        // Reload the crafts after updating
+        showCrafts();
+    } catch (error) {
+        console.error(error);
+    }
 
-        try {
-            const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craft._id}`, {
-                method: "PUT",
-                body: formData,
-            });
-
-            if (!response.ok) {
-                throw new Error("Error updating craft");
-            }
-
-            // Refresh the page to reflect changes
-            location.reload();
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    // Close the edit modal
+    document.getElementById("edit-modal").style.display = "none";
 };
 
-// Function to cancel edit and show original craft details
-const cancelEditCraft = () => {
-    document.getElementById("modal-description").style.display = "block";
-    document.getElementById("modal-supplies").style.display = "block";
-    document.getElementById("edit-craft-btn").style.display = "block";
-    document.getElementById("edit-craft-form").remove();
-    document.getElementById("modal-image").style.display = "block";
-};
+document.getElementById("edit-craft-form").onsubmit = editCraft;
