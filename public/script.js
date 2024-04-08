@@ -116,6 +116,7 @@ const addCraft = async (e, craftId) => {
     }
 };
 
+
 const getSupplies = () => {
     const inputs = document.querySelectorAll("#supply-boxes input");
     let supplies = [];
