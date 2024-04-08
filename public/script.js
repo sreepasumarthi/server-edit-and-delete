@@ -48,8 +48,55 @@ const openModal = (craft) => {
             closeModal();
         }
     });
+
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit Craft";
+    editButton.addEventListener("click", () => editCraft(craft));
+    modal.appendChild(editButton);
 };
 
+const editCraft = (craft) => {
+    openDialog("edit-craft-form");
+    const editForm = document.getElementById("edit-craft-form");
+    editForm.reset();
+    editForm.elements["name"].value = craft.name;
+    editForm.elements["description"].value = craft.description;
+    const suppliesInput = editForm.elements["supplies"];
+    suppliesInput.value = craft.supplies.join(", ");
+    editForm.elements["edit-craft-submit"].addEventListener("click", () => saveEditedCraft(craft._id));
+};
+
+const saveEditedCraft = async (craftId) => {
+    const editForm = document.getElementById("edit-craft-form");
+    const formData = new FormData(editForm);
+    const imgInput = document.getElementById("img");
+    if (imgInput.files.length > 0) {
+        formData.append("img", imgInput.files[0]);
+    }
+
+    try {
+        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
+            method: "PUT",
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error("Error updating craft");
+        }
+
+        const updatedCraft = await response.json();
+        console.log("Craft updated:", updatedCraft);
+
+        // Close modal after saving edits
+        const modal = document.getElementById("myModal");
+        modal.style.display = "none";
+
+        // Refresh crafts list
+        showCrafts();
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 const showCrafts = async () => {
     const craftsJSON = await getCrafts();
@@ -213,39 +260,4 @@ document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
 
-document.getElementById("craft-form").addEventListener("submit", submitCraft);
-
-const submitCraft = async (event) => {
-    event.preventDefault();
-    const form = document.getElementById("craft-form");
-    const formData = new FormData(form);
-    
-    // Construct FormData object from form data
-    const craftData = {};
-    formData.forEach((value, key) => {
-        craftData[key] = value;
-    });
-
-    // Extract _id from craftData
-    const craftId = craftData._id;
-
-    try {
-        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
-            method: "PUT",
-            body: JSON.stringify(craftData),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error("Error updating craft");
-        }
-
-        // Close the modal and refresh crafts list
-        closeModal();
-        showCrafts();
-    } catch (error) {
-        console.error(error);
-    }
-};
+document.getElementById("edit-craft-form").onsubmit = (e) => e.preventDefault();

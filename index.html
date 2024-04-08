@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-
 <head>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-
 
 <body>
     <header>
@@ -16,8 +14,7 @@
     <div id="dialog" class="w3-modal">
         <div class="w3-modal-content">
             <div class="w3-container">
-                <span onclick="document.getElementById('dialog').style.display='none'"
-                    class="w3-button w3-display-topright">&times;</span>
+                <span onclick="document.getElementById('dialog').style.display='none'" class="w3-button w3-display-topright">&times;</span>
                 <section id="dialog-details">
                     <section id="left">
                         <section class="columns">
@@ -38,87 +35,18 @@
                                 <label for="description">Description:</label>
                                 <input type="text" id="description" name="description" required />
                             </p>
-
-
                             <p id="supplies-p">
                                 <label class="inline">Supplies:</label>
                                 <a href="#" id="add-supply">Add Supply</a>
-                            <section id="supply-boxes"></section>
+                                <section id="supply-boxes"></section>
                             </p>
                             <p id="p">
                                 <button type="button" id="cancel-button">Cancel</button>
                                 <button type="submit">Save</button>
                             </p>
                         </form>
-                        <section id="craft-details" class="hidden">
-                        </section>
-                    </section>
-                </section>
-            </div>
-        </div>
-    </div>
-    <div class="columns">
-        <div class="column" id="column1"></div>
-        <div class="column" id="column2"></div>
-        <div class="column" id="column3"></div>
-        <div class="column" id="column4"></div>
-    </div>
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <span class="edit-pencil" onclick="editCraft()">&#9998;</span>
-            <div class="modal-content-wrapper">
-                <div class="modal-image">
-                    <img id="modal-image">
-                </div>
-                <div class="modal-details">
-                    <h2 id="modal-title" data-craft-id=""></h2>
-                    <input type="text" id="name-input" class="hidden"> <!-- Editable name input -->
-                    <p id="modal-description" class="hidden"></p>
-                    <textarea id="description-input" class="hidden"></textarea> <!-- Editable description textarea -->
-                    <button id="save-button" class="hidden">Save</button> <!-- Save button -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-
-
-</html>
-<!DOCTYPE html>
-<html>
-
-
-<head>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-</head>
-
-
-<body>
-    <header>
-        <h1>Buy & Sell Crafts <a href="#" id="add-link">+</a></h1>
-    </header>
-    <div id="craft-list" class="columns"></div>
-    <div id="dialog" class="w3-modal">
-        <div class="w3-modal-content">
-            <div class="w3-container">
-                <span onclick="document.getElementById('dialog').style.display='none'"
-                    class="w3-button w3-display-topright">&times;</span>
-                <section id="dialog-details">
-                    <section id="left">
-                        <section class="columns">
-                            <p id="img-prev-section">
-                                <img id="img-prev" src="https://place-hold.it/200x300">
-                                <input type="file" id="img" name="img" accept="image/*" />
-                            </p>
-                        </section>
-                    </section>
-                    <section id="right">
-                        <h2 id="jj">Make Changes to Your Craft</h2>
-                        <form id="add-craft-form" method="post" class="hidden">
-                            <p id="namestuff">
+                        <form id="edit-craft-form" class="hidden">
+                            <p>
                                 <label for="name">Name:</label>
                                 <input type="text" id="name" name="name" required />
                             </p>
@@ -126,20 +54,17 @@
                                 <label for="description">Description:</label>
                                 <input type="text" id="description" name="description" required />
                             </p>
-
-
-                            <p id="supplies-p">
+                            <p>
                                 <label class="inline">Supplies:</label>
                                 <a href="#" id="add-supply">Add Supply</a>
-                            <section id="supply-boxes"></section>
+                                <input type="text" id="supplies" name="supplies" required />
                             </p>
-                            <p id="p">
-                                <button type="button" id="cancel-button">Cancel</button>
-                                <button type="submit">Save</button>
+                            <p>
+                                <button type="button" id="cancel-edit-button">Cancel</button>
+                                <button type="button" id="edit-craft-submit">Save Edits</button>
                             </p>
                         </form>
-                        <section id="craft-details" class="hidden">
-                        </section>
+                        <section id="craft-details" class="hidden"></section>
                     </section>
                 </section>
             </div>
@@ -162,28 +87,11 @@
                     <h2 id="modal-title"></h2>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
-                    <form id="craft-form" method="post" class="hidden">
-                        <input type="hidden" id="_id" name="_id"> <!-- Hidden field for _id -->
-                        <p>
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" name="name" required />
-                        </p>
-                        <p>
-                            <label for="description">Description:</label>
-                            <input type="text" id="description" name="description" required />
-                        </p>
-                        <!-- Other form fields for supplies, image, etc. -->
-                        <p>
-                            <button type="button" id="cancel-button">Cancel</button>
-                            <button type="submit">Save</button> <!-- Trigger submitCraft function -->
-                        </p>
-                    </form>                    
                 </div>
             </div>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
-
 
 </html>
