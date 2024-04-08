@@ -213,58 +213,78 @@ document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
 
+document.getElementById("edit-craft-btn").addEventListener("click", editCraft);
 
-// Add event listener for the Edit button
-document.getElementById("edit-button").addEventListener("click", () => {
-    // Hide existing modal content
-    document.getElementById("modal-title").style.display = "none";
+// Add event listener for the edit button
+document.getElementById("edit-craft-btn").addEventListener("click", editCraft);
+
+// Function to handle editing a craft
+const editCraft = (craft) => {
+    // Hide existing craft details
     document.getElementById("modal-description").style.display = "none";
     document.getElementById("modal-supplies").style.display = "none";
-    document.getElementById("edit-button").style.display = "none";
-    
+    document.getElementById("edit-craft-btn").style.display = "none";
+
     // Show edit form
-    document.getElementById("edit-craft-form").style.display = "block";
-});
+    const editForm = document.createElement("form");
+    editForm.id = "edit-craft-form";
+    editForm.innerHTML = `
+        <label for="edit-name">Name:</label>
+        <input type="text" id="edit-name" name="name" required value="${craft.name}" />
+        <label for="edit-description">Description:</label>
+        <input type="text" id="edit-description" name="description" required value="${craft.description}" />
+        <label class="inline">Supplies:</label>
+        <a href="#" id="add-supply">Add Supply</a>
+        <section id="edit-supply-boxes">
+            ${craft.supplies.map(supply => `<input type="text" value="${supply}" />`).join("")}
+        </section>
+        <input type="file" id="edit-img" name="img" accept="image/*" />
+        <button type="button" id="cancel-edit-btn">Cancel</button>
+        <button type="submit">Save Edits</button>
+    `;
+    document.querySelector(".modal-details").appendChild(editForm);
 
-// Function to save edits
-const saveEdits = async () => {
-    const form = document.getElementById("edit-craft-form");
-    const formData = new FormData(form);
-    const id = parseInt(document.getElementById("modal-title").dataset.id);
+    // Hide original craft image
+    document.getElementById("modal-image").style.display = "none";
 
-    try {
-        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${id}`, {
-            method: "PUT",
-            body: formData,
-        });
+    // Event listener for cancel edit button
+    document.getElementById("cancel-edit-btn").addEventListener("click", cancelEditCraft);
 
-        if (!response.ok) {
-            throw new Error("Error updating data");
+    // Event listener for edit form submission
+    editForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(editForm);
+        const imgInput = document.getElementById("edit-img");
+        if (imgInput.files.length > 0) {
+            formData.append("img", imgInput.files[0]);
         }
 
-        // Close modal after successful update
-        document.getElementById("myModal").style.display = "none";
-        // Refresh crafts after update
-        showCrafts();
-    } catch (error) {
-        console.error(error);
-    }
+        const supplies = Array.from(document.querySelectorAll("#edit-supply-boxes input")).map(input => input.value);
+        formData.append("supplies", supplies.join(","));
+
+        try {
+            const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craft._id}`, {
+                method: "PUT",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Error updating craft");
+            }
+
+            // Refresh the page to reflect changes
+            location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    };
 };
 
-// Add event listener for Save button
-document.getElementById("save-edits-button").addEventListener("click", saveEdits);
-
-// Function to cancel edit
-const cancelEdit = () => {
-    // Show existing modal content
-    document.getElementById("modal-title").style.display = "block";
+// Function to cancel edit and show original craft details
+const cancelEditCraft = () => {
     document.getElementById("modal-description").style.display = "block";
     document.getElementById("modal-supplies").style.display = "block";
-    document.getElementById("edit-button").style.display = "block";
-    
-    // Hide edit form
-    document.getElementById("edit-craft-form").style.display = "none";
+    document.getElementById("edit-craft-btn").style.display = "block";
+    document.getElementById("edit-craft-form").remove();
+    document.getElementById("modal-image").style.display = "block";
 };
-
-// Add event listener for Cancel button
-document.getElementById("cancel-edit-button").addEventListener("click", cancelEdit);
