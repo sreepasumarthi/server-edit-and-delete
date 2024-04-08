@@ -213,7 +213,8 @@ document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
 
-document.getElementById("edit-craft-btn").addEventListener("click", editCraft);
+// Add event listener for the edit button
+document.getElementById("edit-craft-btn").addEventListener("click", () => editCraft(craft));
 
 // Add event listener for the edit button
 document.getElementById("edit-craft-btn").addEventListener("click", editCraft);
