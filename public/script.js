@@ -1,6 +1,6 @@
 const getCrafts = async () => {
     try {
-        return (await fetch("https://server-edit-and-delete-0kvg.onrender.com")).json();
+        return (await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts")).json();
     } catch (error) {
         console.log("error retrieving data");
         return "";
@@ -28,7 +28,7 @@ const openModal = (craft) => {
     });
 
 
-    modalImage.src = "https://server-edit-and-delete-0kvg.onrender.com" + craft.img;
+    modalImage.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
 
 
     modal.style.display = "block";
@@ -74,7 +74,7 @@ const showCrafts = async () => {
         const galleryItem = document.createElement("div");
         galleryItem.classList.add("gallery-item");
         const img = document.createElement("img");
-        img.src = "https://server-edit-and-delete-0kvg.onrender.com" + craft.img;
+        img.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
         img.alt = craft.name;
         img.addEventListener("click", () => openModal(craft));
         galleryItem.appendChild(img);
@@ -109,7 +109,7 @@ const addCraft = async (e) => {
 
 
     try {
-        response = await fetch("https://server-edit-and-delete-0kvg.onrender.com", {
+        response = await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts", {
             method: "POST",
             body: formData,
         });
@@ -213,8 +213,6 @@ document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
 
-
-// Function to handle edit pencil icon click
 const handleEditCraft = (craft) => {
     const editIcon = document.getElementById("edit-craft");
     editIcon.addEventListener("click", () => {
@@ -235,7 +233,7 @@ const handleEditCraft = (craft) => {
         document.getElementById("edit-supplies").style.display = "block";
 
         // Pass craft object to handleSaveEdit
-        handleSaveEdit(craft);
+        handleSaveEdit(craft); // This is where the craft object is passed to handleSaveEdit
     });
 };
 
@@ -263,7 +261,7 @@ const handleSaveEdit = async (craft) => {
             }
 
             // Close modal after successful update
-            closeModal(); // Assuming closeModal() closes the modal
+            closeModal();
             // You can also reload crafts after saving the edit
             showCrafts();
         } catch (error) {
@@ -271,7 +269,3 @@ const handleSaveEdit = async (craft) => {
         }
     });
 };
-
-// Call functions to handle edit and save actions
-handleEditCraft();
-

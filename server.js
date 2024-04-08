@@ -315,12 +315,12 @@ let crafts = [
 ];
 
 
-app.get("http://localhost:3040/api/crafts", (req, res) => {
+app.get("/api/crafts", (req, res) => {
     res.send(crafts);
 });
 
 
-app.post("http://localhost:3040/api/crafts", upload.single("img"), (req, res) => {
+app.post("/api/crafts", upload.single("img"), (req, res) => {
     const result = validateCraft(req.body);
 
 
@@ -378,7 +378,6 @@ app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
     res.json(updatedCraft);
 });
 
-
 const validateCraft = (craft) => {
     const schema = Joi.object({
         _id: Joi.allow(""),
@@ -392,6 +391,6 @@ const validateCraft = (craft) => {
 };
 
 
-app.listen(3050, () => {
+app.listen(3040, () => {
     console.log("listening");
 });
