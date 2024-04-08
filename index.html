@@ -74,16 +74,15 @@
                     <h2 id="modal-title"></h2>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
-                    <form id="edit-craft-form">
-                        <input type="hidden" id="craftId" name="craftId" value="">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
-                        <label for="description">Description:</label>
-                        <input type="text" id="description" name="description" required>
-                        <!-- Add other fields for editing as needed -->
-                        <button type="submit">Save Changes</button>
-                    </form>
                 </div>
+                <!-- Add an edit pencil icon -->
+                <span id="edit-craft" class="edit-icon">&#9998;</span>
+
+                <!-- Input fields for editing craft details -->
+                <input type="text" id="edit-name" name="edit-name" required />
+                <input type="text" id="edit-description" name="edit-description" required />
+                <input type="text" id="edit-supplies" name="edit-supplies" required />
+
             </div>
         </div>
     </div>

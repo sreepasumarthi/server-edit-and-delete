@@ -347,26 +347,37 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
     res.json(crafts);
 });
 
-// Route to handle craft updates
-app.put("/api/crafts/:id", async (req, res) => {
-    const craftId = req.params.id;
-    const updatedCraftData = req.body;
+app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
+    const craftIndex = crafts.findIndex(craft => craft._id === parseInt(req.params.id));
 
-    try {
-        // Update craft record in the database with the new data
-        const updatedCraft = await Craft.findByIdAndUpdate(craftId, updatedCraftData, { new: true });
-
-        if (!updatedCraft) {
-            return res.status(404).json({ error: "Craft not found" });
-        }
-
-        // Craft successfully updated
-        res.json(updatedCraft);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal server error" });
+    if (craftIndex === -1) {
+        res.status(404).send("Craft with given id was not found");
+        return;
     }
+
+    const result = validateCraft(req.body);
+
+    if (result.error) {
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    const updatedCraft = {
+        _id: crafts[craftIndex]._id,
+        name: req.body.name,
+        description: req.body.description,
+        supplies: req.body.supplies.split(","),
+        img: crafts[craftIndex].img // Maintain existing image or update as needed
+    };
+
+    if (req.file) {
+        updatedCraft.img = "images/" + req.file.filename;
+    }
+
+    crafts[craftIndex] = updatedCraft;
+    res.json(updatedCraft);
 });
+
 
 const validateCraft = (craft) => {
     const schema = Joi.object({
