@@ -1,6 +1,6 @@
 const getCrafts = async () => {
     try {
-        return (await fetch("http://localhost:3050/")).json();
+        return (await fetch("https://server-edit-and-delete-0kvg.onrender.com")).json();
     } catch (error) {
         console.log("error retrieving data");
         return "";
@@ -28,7 +28,7 @@ const openModal = (craft) => {
     });
 
 
-    modalImage.src = "http://localhost:3050/" + craft.img;
+    modalImage.src = "https://server-edit-and-delete-0kvg.onrender.com" + craft.img;
 
 
     modal.style.display = "block";
@@ -74,7 +74,7 @@ const showCrafts = async () => {
         const galleryItem = document.createElement("div");
         galleryItem.classList.add("gallery-item");
         const img = document.createElement("img");
-        img.src = "http://localhost:3050/" + craft.img;
+        img.src = "https://server-edit-and-delete-0kvg.onrender.com" + craft.img;
         img.alt = craft.name;
         img.addEventListener("click", () => openModal(craft));
         galleryItem.appendChild(img);
@@ -109,7 +109,7 @@ const addCraft = async (e) => {
 
 
     try {
-        response = await fetch("http://localhost:3050/", {
+        response = await fetch("https://server-edit-and-delete-0kvg.onrender.com", {
             method: "POST",
             body: formData,
         });
@@ -212,3 +212,66 @@ document.getElementById("img").onchange = (e) => {
 document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
+
+
+// Function to handle edit pencil icon click
+const handleEditCraft = (craft) => {
+    const editIcon = document.getElementById("edit-craft");
+    editIcon.addEventListener("click", () => {
+        // Populate input fields with current craft details
+        const modalTitle = document.getElementById("modal-title").innerText;
+        const modalDescription = document.getElementById("modal-description").innerText;
+        const modalSupplies = document.getElementById("modal-supplies").innerText;
+        document.getElementById("edit-name").value = modalTitle;
+        document.getElementById("edit-description").value = modalDescription;
+        document.getElementById("edit-supplies").value = modalSupplies;
+
+        // Hide craft details, show input fields
+        document.getElementById("modal-title").style.display = "none";
+        document.getElementById("modal-description").style.display = "none";
+        document.getElementById("modal-supplies").style.display = "none";
+        document.getElementById("edit-name").style.display = "block";
+        document.getElementById("edit-description").style.display = "block";
+        document.getElementById("edit-supplies").style.display = "block";
+
+        // Pass craft object to handleSaveEdit
+        handleSaveEdit(craft);
+    });
+};
+
+// Function to handle save button click
+const handleSaveEdit = async (craft) => {
+    const saveButton = document.getElementById("save-edit");
+    saveButton.addEventListener("click", async () => {
+        const editedCraft = {
+            name: document.getElementById("edit-name").value,
+            description: document.getElementById("edit-description").value,
+            supplies: document.getElementById("edit-supplies").value.split(","),
+        };
+
+        try {
+            const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craft._id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(editedCraft)
+            });
+
+            if (!response.ok) {
+                throw new Error("Error updating craft");
+            }
+
+            // Close modal after successful update
+            closeModal(); // Assuming closeModal() closes the modal
+            // You can also reload crafts after saving the edit
+            showCrafts();
+        } catch (error) {
+            console.error(error);
+        }
+    });
+};
+
+// Call functions to handle edit and save actions
+handleEditCraft();
+
