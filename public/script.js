@@ -1,6 +1,6 @@
 const getCrafts = async () => {
     try {
-        return (await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts")).json();
+        return (await fetch("http://localhost:3040/")).json();
     } catch (error) {
         console.log("error retrieving data");
         return "";
@@ -28,7 +28,7 @@ const openModal = (craft) => {
     });
 
 
-    modalImage.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
+    modalImage.src = "http://localhost:3040/" + craft.img;
 
 
     modal.style.display = "block";
@@ -74,7 +74,7 @@ const showCrafts = async () => {
         const galleryItem = document.createElement("div");
         galleryItem.classList.add("gallery-item");
         const img = document.createElement("img");
-        img.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
+        img.src = "http://localhost:3040/" + craft.img;
         img.alt = craft.name;
         img.addEventListener("click", () => openModal(craft));
         galleryItem.appendChild(img);
@@ -109,7 +109,7 @@ const addCraft = async (e) => {
 
 
     try {
-        response = await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts", {
+        response = await fetch("http://localhost:3040/", {
             method: "POST",
             body: formData,
         });
@@ -250,7 +250,7 @@ const handleSaveEdit = async (craft) => {
         };
 
         try {
-            const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craft._id}`, {
+            const response = await fetch(`http://localhost:3040/api/crafts/${craft._id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
