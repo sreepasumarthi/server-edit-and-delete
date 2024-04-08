@@ -215,7 +215,7 @@ document.getElementById("img-prev").onerror = function () {
 
 
 // Function to handle edit pencil icon click
-const handleEditCraft = () => {
+const handleEditCraft = (craft) => {
     const editIcon = document.getElementById("edit-craft");
     editIcon.addEventListener("click", () => {
         // Populate input fields with current craft details
@@ -233,11 +233,15 @@ const handleEditCraft = () => {
         document.getElementById("edit-name").style.display = "block";
         document.getElementById("edit-description").style.display = "block";
         document.getElementById("edit-supplies").style.display = "block";
+
+        // Pass craft object to handleSaveEdit
+        handleSaveEdit(craft);
     });
 };
 
+
 // Function to handle save button click
-const handleSaveEdit = async () => {
+const handleSaveEdit = async (craft) => {
     const saveButton = document.getElementById("save-edit");
     saveButton.addEventListener("click", async () => {
         const editedCraft = {
@@ -266,6 +270,7 @@ const handleSaveEdit = async () => {
         }
     });
 };
+
 
 // Call functions to handle edit and save actions
 handleEditCraft();
