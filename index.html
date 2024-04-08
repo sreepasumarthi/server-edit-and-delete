@@ -74,7 +74,15 @@
                     <h2 id="modal-title"></h2>
                     <p id="modal-description"></p>
                     <ul id="modal-supplies"></ul>
-                    <button id="edit-button">Edit</button>
+                    <button id="edit-button">Edit</button> <!-- Add an edit button -->
+                    <div id="edit-craft-form" class="hidden"> <!-- Hidden form for editing -->
+                        <label for="edit-name">Name:</label>
+                        <input type="text" id="edit-name" name="edit-name" required />
+                        <label for="edit-description">Description:</label>
+                        <input type="text" id="edit-description" name="edit-description" required />
+                        <!-- Add inputs for supplies, if needed -->
+                        <button id="save-edit-button">Save Edits</button>
+                    </div>
                 </div>
             </div>
         </div>

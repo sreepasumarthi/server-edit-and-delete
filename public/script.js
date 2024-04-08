@@ -213,66 +213,53 @@ document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
 
-// Function to handle edit button click
-const handleEditClick = () => {
-    const craftId = parseInt(req.params.id);
-    const craft = crafts.find(craft => craft._id === craftId);
+// Inside script.js
 
-    // Populate form fields with current craft details
-    document.getElementById("name").value = craft.name;
-    document.getElementById("description").value = craft.description;
-    // Populate supplies input fields with current supplies
-    const supplyBox = document.getElementById("supply-boxes");
-    supplyBox.innerHTML = ""; // Clear previous supplies
-    craft.supplies.forEach(supply => {
-        const input = document.createElement("input");
-        input.type = "text";
-        input.value = supply;
-        supplyBox.appendChild(input);
-    });
-
-    // Show the craft edit form
-    openDialog("add-craft-form");
+// Function to show the edit form
+const showEditForm = () => {
+    document.getElementById("modal-details").classList.add("hidden");
+    document.getElementById("edit-craft-form").classList.remove("hidden");
 };
 
-// Add event listener to the edit button
-document.getElementById("edit-button").addEventListener("click", handleEditClick);
+// Event listener for the edit button
+document.getElementById("edit-button").addEventListener("click", showEditForm);
 
-// Function to handle craft edit submission
-const editCraft = async (e) => {
-    e.preventDefault();
-    const form = document.getElementById("add-craft-form");
-    const formData = new FormData(form);
-    let response;
-    const imgInput = document.getElementById("img");
-    if (imgInput.files.length > 0) {
-        formData.append("img", imgInput.files[0]);
-    }
-
-    formData.append("supplies", getSupplies());
+// Function to handle saving edits
+const saveEdits = async () => {
+    const editedCraft = {
+        name: document.getElementById("edit-name").value,
+        description: document.getElementById("edit-description").value,
+        // Add more properties if needed
+    };
 
     try {
-        // Send PUT request to update craft details
-        response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
+        const response = await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts/" + craft._id, {
             method: "PUT",
-            body: formData,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(editedCraft)
         });
 
         if (!response.ok) {
             throw new Error("Error updating craft");
         }
 
-        await response.json();
-        resetForm();
-        document.getElementById("dialog").style.display = "none";
+        // Update the craft object
+        Object.assign(craft, editedCraft);
 
-        // Refresh crafts after successful update
-        showCrafts();
+        // Hide edit form and show craft details again
+        document.getElementById("modal-details").classList.remove("hidden");
+        document.getElementById("edit-craft-form").classList.add("hidden");
+
+        // Update modal content with edited craft details
+        // Implement this part according to your existing logic
     } catch (error) {
         console.error(error);
     }
 };
 
-// Add event listener to craft edit form submission
-document.getElementById("add-craft-form").onsubmit = editCraft;
+// Event listener for the save edits button
+document.getElementById("save-edit-button").addEventListener("click", saveEdits);
+
 
