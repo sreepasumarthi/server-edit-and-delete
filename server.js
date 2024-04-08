@@ -315,12 +315,12 @@ let crafts = [
 ];
 
 
-app.get("/api/crafts", (req, res) => {
+app.get("http://localhost:3040/api/crafts", (req, res) => {
     res.send(crafts);
 });
 
 
-app.post("/api/crafts", upload.single("img"), (req, res) => {
+app.post("http://localhost:3040/api/crafts", upload.single("img"), (req, res) => {
     const result = validateCraft(req.body);
 
 
@@ -392,6 +392,6 @@ const validateCraft = (craft) => {
 };
 
 
-app.listen(3040, () => {
+app.listen(3050, () => {
     console.log("listening");
 });
