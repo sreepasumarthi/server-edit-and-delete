@@ -1,4 +1,3 @@
-// Function to retrieve crafts data from the server asynchronously
 const getCrafts = async () => {
     try {
         return (await fetch("https://server-edit-and-delete-0kvg.onrender.com/api/crafts")).json();
@@ -8,7 +7,7 @@ const getCrafts = async () => {
     }
 };
 
-// Function to open a modal and display details of a specific craft
+
 const openModal = (craft) => {
     const modal = document.getElementById("myModal");
     const modalTitle = document.getElementById("modal-title");
@@ -51,7 +50,7 @@ const openModal = (craft) => {
     });
 };
 
-// Function to display crafts on the webpage
+
 const showCrafts = async () => {
     const craftsJSON = await getCrafts();
     const columns = document.querySelectorAll(".column");
@@ -94,7 +93,7 @@ const showCrafts = async () => {
 
 showCrafts();
 
-// Function to add a new craft
+
 const addCraft = async (e) => {
     e.preventDefault();
     const form = document.getElementById("add-craft-form");
@@ -125,13 +124,15 @@ const addCraft = async (e) => {
         resetForm();
         document.getElementById("dialog").style.display = "none";
 
+
+        // Call showCrafts only once after adding the craft
         showCrafts();
     } catch (error) {
         console.error(error);
     }
 };
 
-// Function to retrieve supplies from input fields and concatenate them into a comma-separated string
+
 const getSupplies = () => {
     const inputs = document.querySelectorAll("#supply-boxes input");
     let supplies = [];
@@ -145,14 +146,14 @@ const getSupplies = () => {
     return supplies.join(",");
 };
 
-// Event listener for cancel button to reset the form and hide the dialog
+
 document.getElementById("cancel-button").addEventListener("click", (e) => {
     e.preventDefault();
     resetForm();
     document.getElementById("dialog").style.display = "none";
 });
 
-// Function to reset the form to its initial state
+
 const resetForm = () => {
     const form = document.getElementById("add-craft-form");
     form.reset();
@@ -160,14 +161,14 @@ const resetForm = () => {
     document.getElementById("img-prev").src = "";
 };
 
-// Function to show the craft form in a dialog
+
 const showCraftForm = (e) => {
     e.preventDefault();
     openDialog("add-craft-form");
     resetForm();
 };
 
-// Function to add a new supply input field to the form
+
 const addSupply = (e) => {
     e.preventDefault();
     const section = document.getElementById("supply-boxes");
@@ -176,7 +177,7 @@ const addSupply = (e) => {
     section.append(input);
 };
 
-// Function to open a dialog with specified id
+
 const openDialog = (id) => {
     document.getElementById("dialog").style.display = "block";
     document.querySelectorAll("#dialog-details > *").forEach((item) => {
@@ -185,15 +186,13 @@ const openDialog = (id) => {
     document.getElementById(id).classList.remove("hidden");
 };
 
-// Initial function call to display crafts when the page loads
-showCrafts();
 
-// Event listeners for form submission, showing craft form, and adding a supply
+showCrafts();
 document.getElementById("add-craft-form").onsubmit = addCraft;
 document.getElementById("add-link").onclick = showCraftForm;
 document.getElementById("add-supply").onclick = addSupply;
 
-// Event listener for image file input change to display preview
+
 document.getElementById("img").onchange = (e) => {
     if (!e.target.files.length) {
         document.getElementById("img-prev").src = "";
@@ -209,75 +208,10 @@ document.getElementById("img").onchange = (e) => {
     reader.readAsDataURL(e.target.files[0]);
 };
 
-// Event handler for error in image preview
+
 document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
-
-// Function to toggle between view and edit modes
-const toggleEditMode = () => {
-    const modalTitle = document.getElementById("modal-title");
-    const modalDescription = document.getElementById("modal-description");
-    const editPencil = document.getElementById("edit-pencil");
-    const saveButton = document.getElementById("save-button");
-    const nameInput = document.getElementById("name-input");
-    const descriptionInput = document.getElementById("description-input");
-
-    // Toggle visibility of elements between view and edit modes
-    modalTitle.classList.toggle("hidden");
-    modalDescription.classList.toggle("hidden");
-    editPencil.classList.toggle("hidden");
-    saveButton.classList.toggle("hidden");
-    nameInput.classList.toggle("hidden");
-    descriptionInput.classList.toggle("hidden");
-
-    // Pre-fill input fields with current craft details in edit mode
-    nameInput.value = modalTitle.innerText;
-    descriptionInput.value = modalDescription.innerText;
-};
-
-// Function to save edits and update craft details
-const saveEdits = async () => {
-    const modalTitle = document.getElementById("modal-title");
-    const modalDescription = document.getElementById("modal-description");
-    const nameInput = document.getElementById("name-input").value;
-    const descriptionInput = document.getElementById("description-input").value;
-    const craftId = parseInt(modalTitle.dataset.craftId); // Retrieve craft ID from dataset
-
-    try {
-        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: nameInput,
-                description: descriptionInput
-                // Add other fields if needed
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error("Error updating craft details");
-        }
-
-        // Update craft details in modal
-        modalTitle.innerText = nameInput;
-        modalDescription.innerText = descriptionInput;
-
-        // Toggle back to view mode
-        toggleEditMode();
-    } catch (error) {
-        console.error(error);
-    }
-};
-
-// Add event listener to the edit pencil icon to toggle edit mode
-document.getElementById("edit-pencil").addEventListener("click", toggleEditMode);
-
-// Add event listener to the save button to save edits
-document.getElementById("save-button").addEventListener("click", saveEdits);
-
 
 document.getElementById("craft-form").addEventListener("submit", submitCraft);
 
