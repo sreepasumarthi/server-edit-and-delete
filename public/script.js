@@ -19,6 +19,11 @@ const openModal = (craft) => {
     modalTitle.innerHTML = `<strong>${craft.name}</strong>`;
     modalDescription.textContent = craft.description;
 
+    const eLink = document.createElement("a");
+    eLink.innerHTML = "  &#9998;";
+    nameHeader.append(eLink);
+    eLink.id = "edit-link";
+
 
     modalSupplies.innerHTML = "<strong>Supplies:</strong>";
     craft.supplies.forEach((supply) => {
@@ -211,31 +216,3 @@ document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
 
-const editCraft = async (e) => {
-    e.preventDefault();
-    const form = document.getElementById("edit-craft-form");
-    const formData = new FormData(form);
-    const craftId = form.getAttribute("data-craft-id");
-    
-    // Make a PUT request to update the craft
-    try {
-        const response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
-            method: "PUT",
-            body: formData,
-        });
-
-        if (!response.ok) {
-            throw new Error("Error updating craft");
-        }
-
-        // Reload the crafts after updating
-        showCrafts();
-    } catch (error) {
-        console.error(error);
-    }
-
-    // Close the edit modal
-    document.getElementById("edit-modal").style.display = "none";
-};
-
-document.getElementById("edit-craft-form").onsubmit = editCraft;

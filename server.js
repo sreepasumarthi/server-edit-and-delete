@@ -347,37 +347,24 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
     res.json(crafts);
 });
 
-// Add a PUT endpoint to update a craft
-app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
-    const craftId = parseInt(req.params.id);
-    const craftIndex = crafts.findIndex(craft => craft._id === craftId);
-
-    // If craft is not found, return 404
-    if (craftIndex === -1) {
-        return res.status(404).send("Craft not found");
-    }
-
-    const result = validateCraft(req.body);
-
-    // If validation fails, return 400 with error message
-    if (result.error) {
-        return res.status(400).send(result.error.details[0].message);
-    }
-
-    // Update the craft details
-    crafts[craftIndex].name = req.body.name;
-    crafts[craftIndex].description = req.body.description;
-    crafts[craftIndex].supplies = req.body.supplies.split(",");
-
-    // If there's a new image, update the image path
-    if (req.file) {
-        crafts[craftIndex].img = "images/" + req.file.filename;
-    }
-
-    // Return the updated craft
-    res.json(crafts[craftIndex]);
+app.put("/api/crafts/:id", upload.single("image"), (req, res) => {
+	const craft = crafts.find((r)=>r._id === parseInt(req.params.id));
+	if (!craft) {
+		res.send(404).send("Craft with given id was not found");
+	}
+	const result = validateCraft(req.body);
+	if (result.error) {
+		res.status(400).send(result.error.details[0].message);
+		return;
+	}
+	craft.name = req.body.name;
+	craft.description = req.body.description;
+	craft.supplies = req.body.supplies.split(",");
+	if (req.file) {
+		craft.image = req.file.filename;
+	}
+	res.send(craft);
 });
-
 
 const validateCraft = (craft) => {
     const schema = Joi.object({
