@@ -239,7 +239,6 @@ const handleEditCraft = (craft) => {
     });
 };
 
-
 // Function to handle save button click
 const handleSaveEdit = async (craft) => {
     const saveButton = document.getElementById("save-edit");
@@ -264,14 +263,15 @@ const handleSaveEdit = async (craft) => {
             }
 
             // Close modal after successful update
-            closeModal();
+            closeModal(); // Assuming closeModal() closes the modal
+            // You can also reload crafts after saving the edit
+            showCrafts();
         } catch (error) {
             console.error(error);
         }
     });
 };
 
-
 // Call functions to handle edit and save actions
 handleEditCraft();
-handleSaveEdit();
+
