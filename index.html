@@ -72,30 +72,11 @@
                     <img id="modal-image">
                 </div>
                 <div class="modal-details">
-                    <h2 id="modal-title"></h2>
-                    <p id="modal-description"></p>
-                    <ul id="modal-supplies"></ul>
-                    <form id="edit-craft-form" data-craft-id="">
-                        <p>
-                            <label for="edit-modal-title">Name:</label>
-                            <input type="text" id="edit-modal-title" name="name" required>
-                        </p>
-                        <p>
-                            <label for="edit-modal-description">Description:</label>
-                            <input type="text" id="edit-modal-description" name="description" required>
-                        </p>
-                        <p>
-                            <label for="edit-modal-supplies">Supplies:</label>
-                            <input type="text" id="edit-modal-supplies" name="supplies" required>
-                        </p>
-                        <p>
-                            <input type="file" id="edit-modal-img" name="img" accept="image/*">
-                        </p>
-                        <p>
-                            <button type="button" id="edit-cancel-button">Cancel</button>
-                            <button type="submit">Save</button>
-                        </p>
-                    </form>
+                    <h2 id="modal-title" data-craft-id=""></h2>
+                    <input type="text" id="name-input" class="hidden"> <!-- Editable name input -->
+                    <p id="modal-description" class="hidden"></p>
+                    <textarea id="description-input" class="hidden"></textarea> <!-- Editable description textarea -->
+                    <button id="save-button" class="hidden">Save</button> <!-- Save button -->
                 </div>
             </div>
         </div>
