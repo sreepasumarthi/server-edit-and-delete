@@ -7,6 +7,7 @@ const getCrafts = async () => {
     }
 };
 
+let currentCraft;
 
 const openModal = (craft) => {
     const modal = document.getElementById("myModal");
@@ -48,6 +49,8 @@ const openModal = (craft) => {
             closeModal();
         }
     });
+
+    currentCraft = craft;
 };
 
 
@@ -260,6 +263,5 @@ const saveEdits = async () => {
 };
 
 // Event listener for the save edits button
-document.getElementById("save-edit-button").addEventListener("click", saveEdits);
-
+document.getElementById("save-edit-button").addEventListener("click", () => saveEdits(currentCraft));
 
