@@ -212,3 +212,67 @@ document.getElementById("img").onchange = (e) => {
 document.getElementById("img-prev").onerror = function () {
     this.src = 'https://place-hold.it/200x300';
 };
+
+// Function to handle edit button click
+const handleEditClick = () => {
+    const craftId = parseInt(req.params.id);
+    const craft = crafts.find(craft => craft._id === craftId);
+
+    // Populate form fields with current craft details
+    document.getElementById("name").value = craft.name;
+    document.getElementById("description").value = craft.description;
+    // Populate supplies input fields with current supplies
+    const supplyBox = document.getElementById("supply-boxes");
+    supplyBox.innerHTML = ""; // Clear previous supplies
+    craft.supplies.forEach(supply => {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = supply;
+        supplyBox.appendChild(input);
+    });
+
+    // Show the craft edit form
+    openDialog("add-craft-form");
+};
+
+// Add event listener to the edit button
+document.getElementById("edit-button").addEventListener("click", handleEditClick);
+
+// Function to handle craft edit submission
+const editCraft = async (e) => {
+    e.preventDefault();
+    const form = document.getElementById("add-craft-form");
+    const formData = new FormData(form);
+    let response;
+    const imgInput = document.getElementById("img");
+    if (imgInput.files.length > 0) {
+        formData.append("img", imgInput.files[0]);
+    }
+
+    formData.append("supplies", getSupplies());
+
+    try {
+        // Send PUT request to update craft details
+        response = await fetch(`https://server-edit-and-delete-0kvg.onrender.com/api/crafts/${craftId}`, {
+            method: "PUT",
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error("Error updating craft");
+        }
+
+        await response.json();
+        resetForm();
+        document.getElementById("dialog").style.display = "none";
+
+        // Refresh crafts after successful update
+        showCrafts();
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+// Add event listener to craft edit form submission
+document.getElementById("add-craft-form").onsubmit = editCraft;
+
