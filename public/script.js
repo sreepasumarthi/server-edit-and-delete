@@ -59,17 +59,17 @@ const editCraft = (craft) => {
     openDialog("edit-craft-form");
     const editForm = document.getElementById("edit-craft-form");
     editForm.reset();
-    editForm.elements["name"].value = craft.name;
-    editForm.elements["description"].value = craft.description;
-    const suppliesInput = editForm.elements["supplies"];
+    editForm.elements["edit-name"].value = craft.name;
+    editForm.elements["edit-description"].value = craft.description;
+    const suppliesInput = editForm.elements["edit-supplies"];
     suppliesInput.value = craft.supplies.join(", ");
-    editForm.elements["edit-craft-submit"].addEventListener("click", () => saveEditedCraft(craft._id));
+    editForm.elements["save-edit-button"].addEventListener("click", () => saveEditedCraft(craft._id));
 };
 
 const saveEditedCraft = async (craftId) => {
     const editForm = document.getElementById("edit-craft-form");
     const formData = new FormData(editForm);
-    const imgInput = document.getElementById("img");
+    const imgInput = document.getElementById("edit-img");
     if (imgInput.files.length > 0) {
         formData.append("img", imgInput.files[0]);
     }
@@ -97,6 +97,7 @@ const saveEditedCraft = async (craftId) => {
         console.error(error);
     }
 };
+
 
 const showCrafts = async () => {
     const craftsJSON = await getCrafts();
