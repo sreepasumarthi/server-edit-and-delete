@@ -14,21 +14,27 @@ body {
 }
 
 .gallery-item {
-    display: flex; /* Use flexbox layout */
-    align-items: center; /* Vertically center the content */
-    margin-bottom: 20px; /* Adjust margin as needed */
+    display: flex;
+    align-items: flex-start; /* Align items at the start of the cross axis */
+    margin-bottom: 20px;
     width: 1000px; /* Adjust width as needed */
 }
 
 .gallery-item img {
-    width: 100px; /* Adjust image width as needed */
-    height: 100px; /* Adjust image height as needed */
-    margin-right: 20px; /* Add spacing between image and text */
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+
+.gallery-item .craft-details {
+    display: flex;
+    flex-direction: column; /* Arrange children in a column */
 }
 
 .gallery-item p {
-    margin: 0; /* Reset default margin for paragraphs */
+    margin: 0;
 }
+
 
 /* Craft Information Modal */
 .modal {
