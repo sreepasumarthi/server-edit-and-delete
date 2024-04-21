@@ -15,21 +15,25 @@ body {
 
 .gallery-item {
     display: flex;
-    align-items: flex-start; /* Align items at the start of the cross axis */
+    align-items: flex-start; 
     margin-bottom: 20px;
-    width: 1000px; /* Adjust width as needed */
+    width: 1000px;
     background-color: aqua;
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-left:10px;
+    padding-right:10px;
 }
 
 .gallery-item img {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     margin-right: 20px;
 }
 
 .gallery-item .craft-details {
     display: flex;
-    flex-direction: column; /* Arrange children in a column */
+    flex-direction: column;
 }
 
 .gallery-item p {
