@@ -149,6 +149,18 @@ const showCrafts = async () => {
         description.textContent = craft.description;
         galleryItem.appendChild(description);
 
+        // Add edit and delete buttons next to the Name
+    const editLink = document.createElement("a");
+    editLink.innerHTML = "&#9998;";
+    modalTitle.append(editLink);
+    editLink.id = "edit-link";
+
+    const deleteLink = document.createElement("a");
+    deleteLink.innerHTML = "&#x274c;";
+    modalTitle.append(deleteLink);
+    deleteLink.id = "delete-link";
+    deleteLink.onclick = deleteCraftMethod.bind(this, craft);
+
         columns[shortestColumnIndex].appendChild(galleryItem);
     });
 };
