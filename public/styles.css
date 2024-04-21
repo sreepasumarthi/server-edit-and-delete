@@ -33,13 +33,15 @@ body {
     margin-right: 20px;
 }
 
-.gallery-item .craft-details {
+.gallery-item  {
     display: flex;
     flex-direction: column;
 }
 
 .gallery-item p {
     margin: 0;
+    list-style-type: disc; /* Add bullet points */
+    margin-left: 10px; /* Adjust the margin for better alignment */
 }
 
 
