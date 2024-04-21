@@ -42,6 +42,7 @@ body {
     margin: 0;
     list-style-type: disc; /* Add bullet points */
     margin-left: 10px; /* Adjust the margin for better alignment */
+    flex-grow: 1; /* Allow the text to take up remaining space */
 }
 
 
