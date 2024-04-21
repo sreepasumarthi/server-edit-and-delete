@@ -134,11 +134,11 @@ const showCrafts = async () => {
 
         const galleryItem = document.createElement("div");
         galleryItem.classList.add("gallery-item");
+        galleryItem.addEventListener("click", () => displayCraftModal(craft)); // Attach click event listener
 
         const img = document.createElement("img");
         img.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
         img.alt = craft.name;
-        img.addEventListener("click", () => displayCraftModal(craft));
         galleryItem.appendChild(img);
 
         const name = document.createElement("p");
