@@ -119,7 +119,6 @@ const deleteCraftMethod = async (craft) => {
 const showCrafts = async () => {
     const craftsJSON = await getCrafts();
 
-
     const columns = document.querySelectorAll(".column");
     if (craftsJSON == "") {
         columns.forEach(column => {
@@ -127,27 +126,30 @@ const showCrafts = async () => {
         });
         return;
     }
-    let columnIndex = 0;
-    let columnCount = columns.length;
-    let columnHeights = Array.from(columns).map(() => 0); // Array to store column heights
 
     craftsJSON.forEach((craft, index) => {
-        const shortestColumnIndex = columnHeights.indexOf(Math.min(...columnHeights));
+        const shortestColumnIndex = Array.from(columns).reduce((acc, column, idx) => {
+            return column.offsetHeight < columns[acc].offsetHeight ? idx : acc;
+        }, 0);
+
         const galleryItem = document.createElement("div");
         galleryItem.classList.add("gallery-item");
+
         const img = document.createElement("img");
         img.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
         img.alt = craft.name;
         img.addEventListener("click", () => displayCraftModal(craft));
         galleryItem.appendChild(img);
-        columns[shortestColumnIndex].appendChild(galleryItem);
-        columnHeights[shortestColumnIndex] += galleryItem.offsetHeight;
 
-        if (columnHeights[shortestColumnIndex] >= columns[shortestColumnIndex].offsetHeight) {
-            columnIndex++;
-            if (columnIndex === columnCount) columnIndex = 0;
-            columnHeights[shortestColumnIndex] = 0;
-        }
+        const name = document.createElement("p");
+        name.textContent = craft.name;
+        galleryItem.appendChild(name);
+
+        const description = document.createElement("p");
+        description.textContent = craft.description;
+        galleryItem.appendChild(description);
+
+        columns[shortestColumnIndex].appendChild(galleryItem);
     });
 };
 
