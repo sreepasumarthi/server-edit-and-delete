@@ -24,6 +24,7 @@ body {
     padding-left:10px;
     padding-right:10px;
     border-radius:10px;
+    border-color: white 5px;
 }
 
 .gallery-item img {
