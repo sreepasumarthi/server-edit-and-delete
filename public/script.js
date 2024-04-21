@@ -19,6 +19,17 @@ const displayCraftModal = (craft) => {
 
     modalTitle.innerHTML = `<strong>${craft.name}</strong>`;
 
+    const editLink = document.createElement("a");
+    editLink.innerHTML = "&#9998;";
+    modalTitle.append(editLink);
+    editLink.id = "edit-link";
+
+    const deleteLink = document.createElement("a");
+    deleteLink.innerHTML = "&#x274c;";
+    modalTitle.append(deleteLink);
+    deleteLink.id = "delete-link";
+    deleteLink.onclick = deleteCraftMethod.bind(this, craft);
+
     modalDescription.textContent = craft.description;
 
     modalSupplies.innerHTML = "<strong>Supplies:</strong>";
@@ -45,6 +56,9 @@ const displayCraftModal = (craft) => {
         }
     });
     currentCraft = craft;
+
+    editLink.onclick = showEditCraftForm;
+    populateCraftEditForm(craft);
 };
 
 
@@ -110,20 +124,6 @@ const showCrafts = async () => {
         });
         return;
     }
-
-    const editLink = document.createElement("a");
-    editLink.innerHTML = "&#9998;";
-    modalTitle.append(editLink);
-    editLink.id = "edit-link";
-
-    const deleteLink = document.createElement("a");
-    deleteLink.innerHTML = "&#x274c;";
-    modalTitle.append(deleteLink);
-    deleteLink.id = "delete-link";
-    deleteLink.onclick = deleteCraftMethod.bind(this, craft);
-
-    editLink.onclick = showEditCraftForm;
-    populateCraftEditForm(craft);
 
     craftsJSON.forEach((craft, index) => {
         const shortestColumnIndex = Array.from(columns).reduce((acc, column, idx) => {
