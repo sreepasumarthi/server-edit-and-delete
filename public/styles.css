@@ -15,7 +15,7 @@ body {
 
 .gallery-item {
     display: flex;
-    align-items: flex-start; 
+    align-items: flex-end; 
     margin-bottom: 20px;
     width: 1000px;
     background-color: aqua;
