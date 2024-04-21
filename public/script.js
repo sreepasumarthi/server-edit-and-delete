@@ -9,7 +9,6 @@ const getCrafts = async () => {
 
 let currentCraft;
 
-// displays craft in readonly modal dialog
 const displayCraftModal = (craft) => {
     const modal = document.getElementById("myModal");
     const modalTitle = document.getElementById("modal-title");
@@ -19,18 +18,6 @@ const displayCraftModal = (craft) => {
     const modelContent = document.getElementById("modelContent");
 
     modalTitle.innerHTML = `<strong>${craft.name}</strong>`;
-
-    // Add edit and delete buttons next to the Name
-    const editLink = document.createElement("a");
-    editLink.innerHTML = "&#9998;";
-    modalTitle.append(editLink);
-    editLink.id = "edit-link";
-
-    const deleteLink = document.createElement("a");
-    deleteLink.innerHTML = "&#x274c;";
-    modalTitle.append(deleteLink);
-    deleteLink.id = "delete-link";
-    deleteLink.onclick = deleteCraftMethod.bind(this, craft);
 
     modalDescription.textContent = craft.description;
 
@@ -58,9 +45,6 @@ const displayCraftModal = (craft) => {
         }
     });
     currentCraft = craft;
-
-    editLink.onclick = showEditCraftForm;
-    populateCraftEditForm(craft);
 };
 
 
@@ -127,6 +111,20 @@ const showCrafts = async () => {
         return;
     }
 
+    const editLink = document.createElement("a");
+    editLink.innerHTML = "&#9998;";
+    modalTitle.append(editLink);
+    editLink.id = "edit-link";
+
+    const deleteLink = document.createElement("a");
+    deleteLink.innerHTML = "&#x274c;";
+    modalTitle.append(deleteLink);
+    deleteLink.id = "delete-link";
+    deleteLink.onclick = deleteCraftMethod.bind(this, craft);
+
+    editLink.onclick = showEditCraftForm;
+    populateCraftEditForm(craft);
+
     craftsJSON.forEach((craft, index) => {
         const shortestColumnIndex = Array.from(columns).reduce((acc, column, idx) => {
             return column.offsetHeight < columns[acc].offsetHeight ? idx : acc;
@@ -134,7 +132,7 @@ const showCrafts = async () => {
 
         const galleryItem = document.createElement("div");
         galleryItem.classList.add("gallery-item");
-        galleryItem.addEventListener("click", () => displayCraftModal(craft)); // Attach click event listener
+        galleryItem.addEventListener("click", () => displayCraftModal(craft));
 
         const img = document.createElement("img");
         img.src = "https://server-edit-and-delete-0kvg.onrender.com/" + craft.img;
@@ -153,9 +151,6 @@ const showCrafts = async () => {
     });
 };
 
-
-
-// post the craft to the server
 const addEditCraft = async (e) => {
     e.preventDefault();
     const form = document.getElementById("craft-form");
@@ -167,7 +162,6 @@ const addEditCraft = async (e) => {
     }
     formData.append("supplies", getSupplies());
 
-    // Add Method
     try {
         if (form._id.value.trim() == "") {
             console.log("in add method");
@@ -178,8 +172,7 @@ const addEditCraft = async (e) => {
             if (!response.ok) {
                 throw new Error("Error posting data");
             }
-        } else { // edit method
-            //put request
+        } else {
             console.log("in put");
             response = await fetch(`/api/crafts/${form._id.value}`, {
                 method: "PUT",
@@ -199,7 +192,6 @@ const addEditCraft = async (e) => {
         clearScreen();
         showCrafts();
         document.getElementById("dialog").style.display = "none";
-        // Call showCrafts only once after adding the craft
        
     }
     catch (error) {
@@ -279,8 +271,6 @@ const openDialog = (id) => {
     document.getElementById(id).classList.remove("hidden");
 };
 
-
-// when the server is loaded show all the crafts from server
 showCrafts();
 
 document.getElementById("craft-form").onsubmit = addEditCraft;
