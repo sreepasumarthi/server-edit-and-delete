@@ -17,6 +17,7 @@ body {
     display: flex; /* Use flexbox layout */
     align-items: center; /* Vertically center the content */
     margin-bottom: 20px; /* Adjust margin as needed */
+    width: 400px; /* Adjust width as needed */
 }
 
 .gallery-item img {
